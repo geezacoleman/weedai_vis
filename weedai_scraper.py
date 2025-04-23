@@ -29,9 +29,9 @@ class WeedAIHandler:
         self.output_html = output_html
         self.dataset_info = {}
         self.type_colors = {
-            'weed': '#FF4136',  # Red
-            'crop': '#2ECC40',  # Green
-            'unknown': '#0074D9'  # Blue
+            'weed': '#003f5c',
+            'crop': '#bc5090',
+            'unknown': '#ffa600'
         }
 
     def scrape_datasets(self) -> None:
@@ -218,7 +218,7 @@ class WeedAIHandler:
             g = int(base_color[3:5], 16)
             b = int(base_color[5:7], 16)
 
-            factor = 0.7 + 0.3 * (i / max(1, len(classes) - 1))
+            factor = 0.7 + 0.3 * (i / max(1, len(classes) - 1)) * 2
 
             new_r = min(255, int(r * factor))
             new_g = min(255, int(g * factor))
@@ -431,38 +431,157 @@ class WeedAIHandler:
 
     def _add_title_and_legend(self, m: folium.Map) -> None:
         """
-        Add title and legend to the map
-
-        Args:
-            m: Folium map object
+        Inject a Bootstrap navbar, a clean page header (with upload button),
+        and a modern legend (three-dot “Image number” + pie-icon) into the map HTML.
         """
-        title_html = '''
-        <h3 align="center" style="font-size:16px"><b>WeedAI Dataset Visualization</b></h3>
-        <p align="center" style="font-size:12px">Location of all datasets currently uploaded to WeedAI.</p>
-        <p align="center" style="font-size:12px">You can access datasets here or click the link in the card: <a href="https://weed-ai.sydney.edu.au/datasets" target="_blank">https://weed-ai.sydney.edu.au/datasets</a></p>
-        '''
-        m.get_root().html.add_child(folium.Element(title_html))
-        legend_html = '''
-        <div style="position: fixed; 
-             bottom: 50px; right: 50px; width: 190px; height: 210px; 
-             border:2px solid grey; z-index:9999; font-size:13px;
-             background-color:white; padding: 12px; border-radius: 5px;">
-             <b>Dataset Class Types</b><br>
-             <div style="margin-top:8px;">
-               <i class="fa fa-circle" style="color:#FF4136"></i> Weed<br>
-               <i class="fa fa-circle" style="color:#2ECC40"></i> Crop<br>
-               <i class="fa fa-circle" style="color:#0074D9"></i> Other<br>
-             </div>
-             <div style="margin-top:15px;">
-               <b>Circle Size:</b> Image qty<br>
-               <b>Segments:</b> By class distribution<br>
-             </div>
-             <div style="margin-top:15px;">
-               <i style="font-size:12px;">Dataset location is approximated</i>
-             </div>
+        # 1) Global CSS
+        css = """
+        <style>
+          /* push content below fixed navbar */
+          body { padding-top: 70px; }
+
+          /* Modern header */
+          .page-header {
+            background: #fff;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          }
+          .page-header h1 {
+            margin: 0;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2C3E50;
+            letter-spacing: 1px;
+          }
+          .page-header p {
+            margin: 0.25rem 0 0;
+            color: #555;
+            font-size: 1rem;
+          }
+
+          /* Legend card */
+          .legend {
+            position: fixed;
+            bottom: 1rem;
+            right: 1rem;
+            background: #fff;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            font-size: 0.85rem;
+            line-height: 1.4;
+            max-width: 240px;
+            z-index: 9999;
+          }
+          .legend h5 {
+            margin: 0 0 0.75rem;
+            font-size: 1rem;
+          }
+          .legend ul {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 1rem;
+          }
+          .legend li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+          }
+          .legend .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+            flex-shrink: 0;
+          }
+          .legend .pie-icon {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-image: conic-gradient(
+              #E76F51 0 33%,
+              #2A9D8F 33% 66%,
+              #264653 66% 100%
+            );
+            margin-right: 0.5rem;
+            flex-shrink: 0;
+          }
+        </style>
+        """
+        m.get_root().html.add_child(folium.Element(css))
+
+        # 2) Navbar + header (with Upload button)
+        navbar_and_header = """
+        <!-- Bootstrap navbar -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top shadow-sm">
+          <div class="container-fluid">
+            <a class="navbar-brand" href="https://weed-ai.sydney.edu.au">Visit WeedAI</a>
+            <button class="navbar-toggler" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false"
+                    aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+              <ul class="navbar-nav">
+                <li class="nav-item">
+                  <a class="nav-link" href="https://weed-ai.sydney.edu.au">Home</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="https://weed-ai.sydney.edu.au/datasets" target="_blank">
+                    Datasets
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+
+        <!-- Page header -->
+        <header class="page-header">
+          <div>
+            <h1>WeedAI Dataset Visualization</h1>
+            <p>Location of all datasets currently uploaded to WeedAI.</p>
+          </div>
+          <a href="https://weed-ai.sydney.edu.au/upload" target="_blank"
+             class="btn btn-primary">
+            Upload Your Data
+          </a>
+        </header>
+        """
+        m.get_root().html.add_child(folium.Element(navbar_and_header))
+
+
+        legend = """
+        <div class="legend">
+          <h5>Dataset Class Types</h5>
+          <ul>
+            <li><span class="dot" style="background:#003f5c;"></span>Weed</li>
+            <li><span class="dot" style="background:#bc5090;"></span>Crop</li>
+          </ul>
+          <h5>Size &amp; Segments</h5>
+          <ul>
+            <li>
+              <span style="display:flex; align-items:center; margin-right:0.5rem;">
+                <span style="width:4px; height:4px; background:#888;
+                             border-radius:50%; margin-right:4px;"></span>
+                <span style="width:8px; height:8px; background:#888;
+                             border-radius:50%; margin-right:4px;"></span>
+                <span style="width:12px; height:12px; background:#888;
+                             border-radius:50%;"></span>
+              </span>
+              Image number
+            </li>
+            <li><span class="pie-icon"></span>Class proportions</li>
+          </ul>
+          <small style="color:#888;">Dataset locations are approximated</small>
         </div>
-        '''
-        m.get_root().html.add_child(folium.Element(legend_html))
+        """
+        m.get_root().html.add_child(folium.Element(legend))
 
     def run_scrape_and_visualize(self) -> None:
         """
