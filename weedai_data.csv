@@ -1,123 +1,137 @@
-dataset_name;url;total_images;latitude;longitude;type;class;class_sub_cat;n_boxes;n_class_images
-DeepWeeds;https://weed-ai.sydney.edu.au/datasets/71318619-87d3-458d-a01e-bb291143d341;17492;-26;150;;none;;0;9091
-DeepWeeds;https://weed-ai.sydney.edu.au/datasets/71318619-87d3-458d-a01e-bb291143d341;17492;-26;150;weed;lantana camara;;0;1064
-DeepWeeds;https://weed-ai.sydney.edu.au/datasets/71318619-87d3-458d-a01e-bb291143d341;17492;-26;150;weed;vachellia nilotica;;0;1062
-DeepWeeds;https://weed-ai.sydney.edu.au/datasets/71318619-87d3-458d-a01e-bb291143d341;17492;-26;150;weed;chromolaena odorata;;0;1072
-DeepWeeds;https://weed-ai.sydney.edu.au/datasets/71318619-87d3-458d-a01e-bb291143d341;17492;-26;150;weed;ziziphus mauritiana;;0;1125
-DeepWeeds;https://weed-ai.sydney.edu.au/datasets/71318619-87d3-458d-a01e-bb291143d341;17492;-26;150;weed;parkinsonia aculeata;;0;1031
-DeepWeeds;https://weed-ai.sydney.edu.au/datasets/71318619-87d3-458d-a01e-bb291143d341;17492;-26;150;weed;gutierrezia sarothrae;;0;1016
-DeepWeeds;https://weed-ai.sydney.edu.au/datasets/71318619-87d3-458d-a01e-bb291143d341;17492;-26;150;weed;cryptostegia grandiflora;;0;1009
-DeepWeeds;https://weed-ai.sydney.edu.au/datasets/71318619-87d3-458d-a01e-bb291143d341;17492;-26;150;weed;parthenium hysterophorus;;0;1022
-Palmer amaranth - Cornell;https://weed-ai.sydney.edu.au/datasets/0935d5a0-1270-4e6b-9618-2224240b5a03;995;42.733798;-76.658726;weed;amaranthus palmeri;;1405;993
-20200701 - Narrabri Chickpea BFLYS;https://weed-ai.sydney.edu.au/datasets/839a5f35-9c7b-4df3-92f4-d0fc15120920;31;-30.272457;149.80183;weed;lolium rigidum;;98;17
-20200701 - Narrabri Chickpea BFLYS;https://weed-ai.sydney.edu.au/datasets/839a5f35-9c7b-4df3-92f4-d0fc15120920;31;-30.272457;149.80183;weed;rapistrum rugosum;;6;2
-20200701 - Narrabri Chickpea BFLYS;https://weed-ai.sydney.edu.au/datasets/839a5f35-9c7b-4df3-92f4-d0fc15120920;31;-30.272457;149.80183;weed;sonchus oleraceus;;94;30
-Amsinckia in chickpeas;https://weed-ai.sydney.edu.au/datasets/21675efe-9d25-4096-be76-3a541475efd4;124;-35.105657;142.780617;weed;amsinckia;rosette;1101;124
-20190729 - Annual Ryegrass and Turnipweed in Wheat;https://weed-ai.sydney.edu.au/datasets/5158bbe5-6030-48ad-8214-b68ff8118c22;27;-30.272457;149.80183;weed;lolium rigidum;;315;27
-20190729 - Annual Ryegrass and Turnipweed in Wheat;https://weed-ai.sydney.edu.au/datasets/5158bbe5-6030-48ad-8214-b68ff8118c22;27;-30.272457;149.80183;weed;rapistrum rugosum;;2;2
-20200701 - Narrabri Chickpea BFLY;https://weed-ai.sydney.edu.au/datasets/78b0140f-e6b2-4afe-9672-756e4941bb35;41;-30.272457;149.80183;weed;lolium rigidum;;100;22
-20200701 - Narrabri Chickpea BFLY;https://weed-ai.sydney.edu.au/datasets/78b0140f-e6b2-4afe-9672-756e4941bb35;41;-30.272457;149.80183;weed;rapistrum rugosum;;5;5
-20200701 - Narrabri Chickpea BFLY;https://weed-ai.sydney.edu.au/datasets/78b0140f-e6b2-4afe-9672-756e4941bb35;41;-30.272457;149.80183;weed;sonchus oleraceus;;74;30
-Palmer amaranth - TEST;https://weed-ai.sydney.edu.au/datasets/7e03cd97-f462-439d-b4c7-b6289edcc21b;13;30.536423;-96.423187;weed;amaranthus palmeri;;155;13
-20201014 - Cobbity Wheat BFLYS;https://weed-ai.sydney.edu.au/datasets/54c0c5c4-0c15-44c7-9eeb-5affb7e8327e;129;-34.020932;150.664883;weed;lolium rigidum;;131;71
-20201014 - Cobbity Wheat BFLYS;https://weed-ai.sydney.edu.au/datasets/54c0c5c4-0c15-44c7-9eeb-5affb7e8327e;129;-34.020932;150.664883;weed;rapistrum rugosum;;241;90
-Broadleaf Weeds in Common Couch;https://weed-ai.sydney.edu.au/datasets/8b14a44b-bc7f-4b92-9bc0-224a2a2c4e22;78;-32.021802;115.763709;weed;sonchus oleraceus;;4;4
-Broadleaf Weeds in Common Couch;https://weed-ai.sydney.edu.au/datasets/8b14a44b-bc7f-4b92-9bc0-224a2a2c4e22;78;-32.021802;115.763709;weed;erigeron bonariensis;;30;22
-Broadleaf Weeds in Common Couch;https://weed-ai.sydney.edu.au/datasets/8b14a44b-bc7f-4b92-9bc0-224a2a2c4e22;78;-32.021802;115.763709;weed;taraxacum officinale;;533;75
-20200827 - Cobbity Wheat BFLY;https://weed-ai.sydney.edu.au/datasets/3c363da3-6274-45e4-a0ce-b307cb0f89cc;39;-34.020932;150.664883;weed;rapistrum rugosum;;40;29
-20200827 - Cobbity Wheat BFLY;https://weed-ai.sydney.edu.au/datasets/3c363da3-6274-45e4-a0ce-b307cb0f89cc;39;-34.020932;150.664883;weed;raphanus raphanistrum;;16;14
-20201014 - Cobbity Wheat BFLY;https://weed-ai.sydney.edu.au/datasets/73468c19-b098-406a-86fa-df172caaec16;101;-34.020932;150.664883;weed;lolium rigidum;;94;55
-20201014 - Cobbity Wheat BFLY;https://weed-ai.sydney.edu.au/datasets/73468c19-b098-406a-86fa-df172caaec16;101;-34.020932;150.664883;weed;rapistrum rugosum;;174;71
-20190728 - Narrabri Wheat;https://weed-ai.sydney.edu.au/datasets/dc322d80-be00-49cf-822c-9e9b40e37425;184;-30.272457;149.80183;weed;lolium rigidum;;1950;138
-20190728 - Narrabri Wheat;https://weed-ai.sydney.edu.au/datasets/dc322d80-be00-49cf-822c-9e9b40e37425;184;-30.272457;149.80183;weed;rapistrum rugosum;;94;52
-20190728 - Narrabri Wheat;https://weed-ai.sydney.edu.au/datasets/dc322d80-be00-49cf-822c-9e9b40e37425;184;-30.272457;149.80183;weed;sonchus oleraceus;;36;30
-20190712 - Northern WA Wheatbelt Blue Lupins;https://weed-ai.sydney.edu.au/datasets/9df290f4-a29b-44b2-9de6-24bca1cee846;217;-28.776944;114.604108;weed;lupinus cosentinii;;4879;217
-Precision Sustainable Ag 2021 OpenCV Competition;https://weed-ai.sydney.edu.au/datasets/27813558-2b3c-496f-aab4-5e724a056213;727;39.02615;-76.923243;weed;poaceae;;698;235
-Precision Sustainable Ag 2021 OpenCV Competition;https://weed-ai.sydney.edu.au/datasets/27813558-2b3c-496f-aab4-5e724a056213;727;39.02615;-76.923243;weed;chenopodium album;;373;166
-Precision Sustainable Ag 2021 OpenCV Competition;https://weed-ai.sydney.edu.au/datasets/27813558-2b3c-496f-aab4-5e724a056213;727;39.02615;-76.923243;weed;helianthus annuus;;283;149
-Precision Sustainable Ag 2021 OpenCV Competition;https://weed-ai.sydney.edu.au/datasets/27813558-2b3c-496f-aab4-5e724a056213;727;39.02615;-76.923243;weed;vigna unguiculata;;272;148
-Precision Sustainable Ag 2021 OpenCV Competition;https://weed-ai.sydney.edu.au/datasets/27813558-2b3c-496f-aab4-5e724a056213;727;39.02615;-76.923243;weed;erigeron canadensis;;247;112
-Precision Sustainable Ag 2021 OpenCV Competition;https://weed-ai.sydney.edu.au/datasets/27813558-2b3c-496f-aab4-5e724a056213;727;39.02615;-76.923243;weed;abutilon theophrasti;;149;81
-Precision Sustainable Ag 2021 OpenCV Competition;https://weed-ai.sydney.edu.au/datasets/27813558-2b3c-496f-aab4-5e724a056213;727;39.02615;-76.923243;weed;trifolium incarnatum;;1422;359
-20210317 - Wild radish in wheat;https://weed-ai.sydney.edu.au/datasets/09af32ad-2e9e-4f7c-ae08-55374824ee15;41;-34.021182;150.66476;weed;raphanus raphanistrum;;258;41
-Wild carrot flowers in canola;https://weed-ai.sydney.edu.au/datasets/c4a80379-afda-4972-b274-82a544addd0d;52;-36.530173;-71.911407;weed;daucus carota;;3774;52
-Vegetable Crops Detection (VCD) - Maize;https://weed-ai.sydney.edu.au/datasets/f6e9953d-dc9c-4bf2-8309-e17d726030d1;1101;46.339312;3.432381;crop;zea mays;stem;2269;1087
-Vegetable Crops Detection (VCD) - Maize;https://weed-ai.sydney.edu.au/datasets/f6e9953d-dc9c-4bf2-8309-e17d726030d1;1101;46.339312;3.432381;crop;zea mays;whole-plant;2259;1101
-LincolnBeet;https://weed-ai.sydney.edu.au/datasets/dc1e5436-fa3e-4c0f-84e3-3ea875ea9db4;4307;53.229258;-0.53462;weed;UNSPECIFIED;;22208;3136
-LincolnBeet;https://weed-ai.sydney.edu.au/datasets/dc1e5436-fa3e-4c0f-84e3-3ea875ea9db4;4307;53.229258;-0.53462;crop;beta vulgaris;;16026;4064
-RadishWheatDataset;https://weed-ai.sydney.edu.au/datasets/8b8f134f-ede4-4792-b1f7-d38fc05d8127;552;-34.021837;150.66637;weed;raphanus raphanistrum;BBCH10-13;184;97
-RadishWheatDataset;https://weed-ai.sydney.edu.au/datasets/8b8f134f-ede4-4792-b1f7-d38fc05d8127;552;-34.021837;150.66637;weed;raphanus raphanistrum;BBCH14-15;174;144
-RadishWheatDataset;https://weed-ai.sydney.edu.au/datasets/8b8f134f-ede4-4792-b1f7-d38fc05d8127;552;-34.021837;150.66637;weed;raphanus raphanistrum;BBCH15-51;552;372
-RadishWheatDataset;https://weed-ai.sydney.edu.au/datasets/8b8f134f-ede4-4792-b1f7-d38fc05d8127;552;-34.021837;150.66637;weed;raphanus raphanistrum;BBCH52-62;102;85
-Brownlow Hill Fireweed;https://weed-ai.sydney.edu.au/datasets/24b34712-c31b-4efc-9790-406d1f14d840;20;-34.035563;150.653633;weed;senecio madagascariensis;;20;20
-RoboWeedMap;https://weed-ai.sydney.edu.au/datasets/aa0cb351-9b5a-400f-bb2e-ed02b2da3699;1147;55.566451;10.123196;weed;poaceae;;19221;884
-RoboWeedMap;https://weed-ai.sydney.edu.au/datasets/aa0cb351-9b5a-400f-bb2e-ed02b2da3699;1147;55.566451;10.123196;weed;brassicaceae;;41810;1076
-Multiple weed species detection;https://weed-ai.sydney.edu.au/datasets/84fd3c3f-dd3e-400b-ac5a-d18ca712c3d0;905;42.733798;-76.658726;weed;chenopodium album;;464;311
-Multiple weed species detection;https://weed-ai.sydney.edu.au/datasets/84fd3c3f-dd3e-400b-ac5a-d18ca712c3d0;905;42.733798;-76.658726;weed;amaranthus palmeri;;493;260
-Multiple weed species detection;https://weed-ai.sydney.edu.au/datasets/84fd3c3f-dd3e-400b-ac5a-d18ca712c3d0;905;42.733798;-76.658726;weed;xanthium strumarium;;96;83
-Multiple weed species detection;https://weed-ai.sydney.edu.au/datasets/84fd3c3f-dd3e-400b-ac5a-d18ca712c3d0;905;42.733798;-76.658726;weed;taraxacum officinale;;144;99
-Multiple weed species detection;https://weed-ai.sydney.edu.au/datasets/84fd3c3f-dd3e-400b-ac5a-d18ca712c3d0;905;42.733798;-76.658726;weed;amaranthus tuberculatus;;197;152
-Danish Winter Radish Weeds;https://weed-ai.sydney.edu.au/datasets/42aabffe-9df4-4b43-b756-8022293b75fc;30;55.676153;12.311847;weed;raphanus raphanistrum;;84;30
-Emerging ryegrass seedlings in a fallow soil;https://weed-ai.sydney.edu.au/datasets/c828f20d-9b3b-451a-b1a3-eb35398760da;14;-36.53163777;-71.92193544;weed;lolium multiflorum;;2806;14
-Danish pasture weeds - wild radish creeping thistle;https://weed-ai.sydney.edu.au/datasets/a6a1f731-f887-4a8b-be74-db30132c6898;10;55.712797;12.213646;weed;cirsium arvense;;76;10
-Danish pasture weeds - wild radish creeping thistle;https://weed-ai.sydney.edu.au/datasets/a6a1f731-f887-4a8b-be74-db30132c6898;10;55.712797;12.213646;weed;raphanus raphanistrum;;23;10
-Danish thistles;https://weed-ai.sydney.edu.au/datasets/9646f5bf-9cd1-4988-accc-e1663774b046;243;55.675473;12.303226;weed;cirsium vulgare;;482;243
-CottonWeedDet12;https://weed-ai.sydney.edu.au/datasets/2c14915b-0827-4b65-9908-d2a6df0d48f3;5648;33.453808;-88.790587;weed;eclipta;;865;576
-CottonWeedDet12;https://weed-ai.sydney.edu.au/datasets/2c14915b-0827-4b65-9908-d2a6df0d48f3;5648;33.453808;-88.790587;weed;ipomoea indica;;1344;1149
-CottonWeedDet12;https://weed-ai.sydney.edu.au/datasets/2c14915b-0827-4b65-9908-d2a6df0d48f3;5648;33.453808;-88.790587;weed;eleusine indica;;214;183
-CottonWeedDet12;https://weed-ai.sydney.edu.au/datasets/2c14915b-0827-4b65-9908-d2a6df0d48f3;5648;33.453808;-88.790587;weed;sida rhombifolia;;486;433
-CottonWeedDet12;https://weed-ai.sydney.edu.au/datasets/2c14915b-0827-4b65-9908-d2a6df0d48f3;5648;33.453808;-88.790587;weed;physalis angulata;;123;111
-CottonWeedDet12;https://weed-ai.sydney.edu.au/datasets/2c14915b-0827-4b65-9908-d2a6df0d48f3;5648;33.453808;-88.790587;weed;senna obtusifolia;;243;198
-CottonWeedDet12;https://weed-ai.sydney.edu.au/datasets/2c14915b-0827-4b65-9908-d2a6df0d48f3;5648;33.453808;-88.790587;weed;amaranthus palmeri;;348;305
-CottonWeedDet12;https://weed-ai.sydney.edu.au/datasets/2c14915b-0827-4b65-9908-d2a6df0d48f3;5648;33.453808;-88.790587;weed;euphorbia maculata;;956;671
-CottonWeedDet12;https://weed-ai.sydney.edu.au/datasets/2c14915b-0827-4b65-9908-d2a6df0d48f3;5648;33.453808;-88.790587;weed;portulaca oleracea;;992;652
-CottonWeedDet12;https://weed-ai.sydney.edu.au/datasets/2c14915b-0827-4b65-9908-d2a6df0d48f3;5648;33.453808;-88.790587;weed;mollugo verticillata;;962;564
-CottonWeedDet12;https://weed-ai.sydney.edu.au/datasets/2c14915b-0827-4b65-9908-d2a6df0d48f3;5648;33.453808;-88.790587;weed;amaranthus tuberculatus;;1959;1413
-CottonWeedDet12;https://weed-ai.sydney.edu.au/datasets/2c14915b-0827-4b65-9908-d2a6df0d48f3;5648;33.453808;-88.790587;weed;ambrosia artemisiifolia;;896;512
-Palmer amaranth Growth Stage - 8 (PAGS8) - Part 1;https://weed-ai.sydney.edu.au/datasets/5c78d067-8750-4803-9cbe-57df8fae55e4;614;30.537516;-96.422415;weed;amaranthus palmeri;BBCH10-12;509;65
-Palmer amaranth Growth Stage - 8 (PAGS8) - Part 1;https://weed-ai.sydney.edu.au/datasets/5c78d067-8750-4803-9cbe-57df8fae55e4;614;30.537516;-96.422415;weed;amaranthus palmeri;BBCH13-16;314;121
-Palmer amaranth Growth Stage - 8 (PAGS8) - Part 1;https://weed-ai.sydney.edu.au/datasets/5c78d067-8750-4803-9cbe-57df8fae55e4;614;30.537516;-96.422415;weed;amaranthus palmeri;BBCH17-19;246;175
-Palmer amaranth Growth Stage - 8 (PAGS8) - Part 1;https://weed-ai.sydney.edu.au/datasets/5c78d067-8750-4803-9cbe-57df8fae55e4;614;30.537516;-96.422415;weed;amaranthus palmeri;BBCH51-59;68;63
-Palmer amaranth Growth Stage - 8 (PAGS8) - Part 1;https://weed-ai.sydney.edu.au/datasets/5c78d067-8750-4803-9cbe-57df8fae55e4;614;30.537516;-96.422415;weed;amaranthus palmeri;BBCH60-69;65;57
-Palmer amaranth Growth Stage - 8 (PAGS8) - Part 1;https://weed-ai.sydney.edu.au/datasets/5c78d067-8750-4803-9cbe-57df8fae55e4;614;30.537516;-96.422415;weed;amaranthus palmeri;BBCH13-29 - bushy;361;237
-Palmer amaranth Growth Stage - 8 (PAGS8) - Part 1;https://weed-ai.sydney.edu.au/datasets/5c78d067-8750-4803-9cbe-57df8fae55e4;614;30.537516;-96.422415;weed;amaranthus palmeri;BBCH51-59 - bushy;202;170
-Palmer amaranth Growth Stage - 8 (PAGS8) - Part 1;https://weed-ai.sydney.edu.au/datasets/5c78d067-8750-4803-9cbe-57df8fae55e4;614;30.537516;-96.422415;weed;amaranthus palmeri;BBCH60-69 - bushy;175;147
-Vegetable Crops Detection (VCD) - Beans;https://weed-ai.sydney.edu.au/datasets/499647c5-fdd2-472f-bccb-ee4acda631c9;770;46.339312;3.432381;crop;phaseolus vulgaris;stem;2915;770
-Vegetable Crops Detection (VCD) - Beans;https://weed-ai.sydney.edu.au/datasets/499647c5-fdd2-472f-bccb-ee4acda631c9;770;46.339312;3.432381;crop;phaseolus vulgaris;whole-plant;2910;770
-ImageWeeds (brassica);https://weed-ai.sydney.edu.au/datasets/a048518f-9651-4c8a-8c28-38ff87f3e9c4;44;46.9005;-97.21136;weed;bassia scoparia;;61;27
-ImageWeeds (brassica);https://weed-ai.sydney.edu.au/datasets/a048518f-9651-4c8a-8c28-38ff87f3e9c4;44;46.9005;-97.21136;weed;erigeron canadensis;;35;23
-ImageWeeds (brassica);https://weed-ai.sydney.edu.au/datasets/a048518f-9651-4c8a-8c28-38ff87f3e9c4;44;46.9005;-97.21136;weed;amaranthus retroflexus;;24;12
-ImageWeeds (brassica);https://weed-ai.sydney.edu.au/datasets/a048518f-9651-4c8a-8c28-38ff87f3e9c4;44;46.9005;-97.21136;weed;amaranthus tuberculatus;;47;22
-ImageWeeds (brassica);https://weed-ai.sydney.edu.au/datasets/a048518f-9651-4c8a-8c28-38ff87f3e9c4;44;46.9005;-97.21136;weed;ambrosia artemisiifolia;;67;25
-ImageWeeds (flax);https://weed-ai.sydney.edu.au/datasets/ab3da4ea-4cb4-407a-a007-7052ed3a7850;115;46.9005;-97.21136;weed;bassia scoparia;;145;60
-ImageWeeds (flax);https://weed-ai.sydney.edu.au/datasets/ab3da4ea-4cb4-407a-a007-7052ed3a7850;115;46.9005;-97.21136;weed;erigeron canadensis;;80;48
-ImageWeeds (flax);https://weed-ai.sydney.edu.au/datasets/ab3da4ea-4cb4-407a-a007-7052ed3a7850;115;46.9005;-97.21136;weed;amaranthus retroflexus;;80;36
-ImageWeeds (flax);https://weed-ai.sydney.edu.au/datasets/ab3da4ea-4cb4-407a-a007-7052ed3a7850;115;46.9005;-97.21136;weed;amaranthus tuberculatus;;73;36
-ImageWeeds (flax);https://weed-ai.sydney.edu.au/datasets/ab3da4ea-4cb4-407a-a007-7052ed3a7850;115;46.9005;-97.21136;weed;ambrosia artemisiifolia;;139;53
-ImageWeeds (lentils);https://weed-ai.sydney.edu.au/datasets/9d1778f9-4f60-4f58-8bba-a72011e29555;28;46.9005;-97.21136;weed;bassia scoparia;;45;18
-ImageWeeds (lentils);https://weed-ai.sydney.edu.au/datasets/9d1778f9-4f60-4f58-8bba-a72011e29555;28;46.9005;-97.21136;weed;erigeron canadensis;;16;11
-ImageWeeds (lentils);https://weed-ai.sydney.edu.au/datasets/9d1778f9-4f60-4f58-8bba-a72011e29555;28;46.9005;-97.21136;weed;amaranthus retroflexus;;15;8
-ImageWeeds (lentils);https://weed-ai.sydney.edu.au/datasets/9d1778f9-4f60-4f58-8bba-a72011e29555;28;46.9005;-97.21136;weed;amaranthus tuberculatus;;44;16
-ImageWeeds (lentils);https://weed-ai.sydney.edu.au/datasets/9d1778f9-4f60-4f58-8bba-a72011e29555;28;46.9005;-97.21136;weed;ambrosia artemisiifolia;;40;20
-ImageWeeds (field_peas);https://weed-ai.sydney.edu.au/datasets/1807b958-5002-4133-aba3-7a757a690a44;70;46.9005;-97.21136;weed;bassia scoparia;;75;35
-ImageWeeds (field_peas);https://weed-ai.sydney.edu.au/datasets/1807b958-5002-4133-aba3-7a757a690a44;70;46.9005;-97.21136;weed;erigeron canadensis;;47;26
-ImageWeeds (field_peas);https://weed-ai.sydney.edu.au/datasets/1807b958-5002-4133-aba3-7a757a690a44;70;46.9005;-97.21136;weed;amaranthus retroflexus;;32;13
-ImageWeeds (field_peas);https://weed-ai.sydney.edu.au/datasets/1807b958-5002-4133-aba3-7a757a690a44;70;46.9005;-97.21136;weed;amaranthus tuberculatus;;40;16
-ImageWeeds (field_peas);https://weed-ai.sydney.edu.au/datasets/1807b958-5002-4133-aba3-7a757a690a44;70;46.9005;-97.21136;weed;ambrosia artemisiifolia;;69;35
-ImageWeeds (zea mays);https://weed-ai.sydney.edu.au/datasets/1a9e04c8-80c3-41f1-a7af-a9d3f39d0feb;94;46.9005;-97.21136;weed;bassia scoparia;;104;48
-ImageWeeds (zea mays);https://weed-ai.sydney.edu.au/datasets/1a9e04c8-80c3-41f1-a7af-a9d3f39d0feb;94;46.9005;-97.21136;weed;erigeron canadensis;;62;39
-ImageWeeds (zea mays);https://weed-ai.sydney.edu.au/datasets/1a9e04c8-80c3-41f1-a7af-a9d3f39d0feb;94;46.9005;-97.21136;weed;amaranthus retroflexus;;68;31
-ImageWeeds (zea mays);https://weed-ai.sydney.edu.au/datasets/1a9e04c8-80c3-41f1-a7af-a9d3f39d0feb;94;46.9005;-97.21136;weed;amaranthus tuberculatus;;88;40
-ImageWeeds (zea mays);https://weed-ai.sydney.edu.au/datasets/1a9e04c8-80c3-41f1-a7af-a9d3f39d0feb;94;46.9005;-97.21136;weed;ambrosia artemisiifolia;;129;53
-ImageWeeds (beta vulgaris);https://weed-ai.sydney.edu.au/datasets/327558ca-3bc2-4b55-b0ea-0319aeb3636f;27;46.9005;-97.21136;weed;bassia scoparia;;26;13
-ImageWeeds (beta vulgaris);https://weed-ai.sydney.edu.au/datasets/327558ca-3bc2-4b55-b0ea-0319aeb3636f;27;46.9005;-97.21136;weed;erigeron canadensis;;14;10
-ImageWeeds (beta vulgaris);https://weed-ai.sydney.edu.au/datasets/327558ca-3bc2-4b55-b0ea-0319aeb3636f;27;46.9005;-97.21136;weed;amaranthus retroflexus;;4;2
-ImageWeeds (beta vulgaris);https://weed-ai.sydney.edu.au/datasets/327558ca-3bc2-4b55-b0ea-0319aeb3636f;27;46.9005;-97.21136;weed;amaranthus tuberculatus;;20;7
-ImageWeeds (beta vulgaris);https://weed-ai.sydney.edu.au/datasets/327558ca-3bc2-4b55-b0ea-0319aeb3636f;27;46.9005;-97.21136;weed;ambrosia artemisiifolia;;43;19
-ImageWeeds (glycine max);https://weed-ai.sydney.edu.au/datasets/cfe6e919-6ddd-4b4e-aa63-58483841a11f;81;46.9005;-97.21136;weed;bassia scoparia;;63;35
-ImageWeeds (glycine max);https://weed-ai.sydney.edu.au/datasets/cfe6e919-6ddd-4b4e-aa63-58483841a11f;81;46.9005;-97.21136;weed;erigeron canadensis;;74;40
-ImageWeeds (glycine max);https://weed-ai.sydney.edu.au/datasets/cfe6e919-6ddd-4b4e-aa63-58483841a11f;81;46.9005;-97.21136;weed;amaranthus retroflexus;;36;19
-ImageWeeds (glycine max);https://weed-ai.sydney.edu.au/datasets/cfe6e919-6ddd-4b4e-aa63-58483841a11f;81;46.9005;-97.21136;weed;amaranthus tuberculatus;;34;13
-ImageWeeds (glycine max);https://weed-ai.sydney.edu.au/datasets/cfe6e919-6ddd-4b4e-aa63-58483841a11f;81;46.9005;-97.21136;weed;ambrosia artemisiifolia;;77;29
-Vegetable Crops Detection (VCD) - Leeks;https://weed-ai.sydney.edu.au/datasets/2adbf2e1-ebc1-48fd-bbbc-76ef8b97e255;601;46.339312;3.432381;crop;allium ampeloprasum;stem;3192;601
-Vegetable Crops Detection (VCD) - Leeks;https://weed-ai.sydney.edu.au/datasets/2adbf2e1-ebc1-48fd-bbbc-76ef8b97e255;601;46.339312;3.432381;crop;allium ampeloprasum;whole-plant;3070;601
+dataset_name,url,total_images,latitude,longitude,type,class,class_sub_cat,n_boxes,n_class_images
+DeepWeeds,https://weed-ai.sydney.edu.au/datasets/71318619-87d3-458d-a01e-bb291143d341,17492,-26,+150,,none,,0,9091
+DeepWeeds,https://weed-ai.sydney.edu.au/datasets/71318619-87d3-458d-a01e-bb291143d341,17492,-26,+150,weed,lantana camara,,0,1064
+DeepWeeds,https://weed-ai.sydney.edu.au/datasets/71318619-87d3-458d-a01e-bb291143d341,17492,-26,+150,weed,vachellia nilotica,,0,1062
+DeepWeeds,https://weed-ai.sydney.edu.au/datasets/71318619-87d3-458d-a01e-bb291143d341,17492,-26,+150,weed,chromolaena odorata,,0,1072
+DeepWeeds,https://weed-ai.sydney.edu.au/datasets/71318619-87d3-458d-a01e-bb291143d341,17492,-26,+150,weed,ziziphus mauritiana,,0,1125
+DeepWeeds,https://weed-ai.sydney.edu.au/datasets/71318619-87d3-458d-a01e-bb291143d341,17492,-26,+150,weed,parkinsonia aculeata,,0,1031
+DeepWeeds,https://weed-ai.sydney.edu.au/datasets/71318619-87d3-458d-a01e-bb291143d341,17492,-26,+150,weed,gutierrezia sarothrae,,0,1016
+DeepWeeds,https://weed-ai.sydney.edu.au/datasets/71318619-87d3-458d-a01e-bb291143d341,17492,-26,+150,weed,cryptostegia grandiflora,,0,1009
+DeepWeeds,https://weed-ai.sydney.edu.au/datasets/71318619-87d3-458d-a01e-bb291143d341,17492,-26,+150,weed,parthenium hysterophorus,,0,1022
+Palmer amaranth - Cornell,https://weed-ai.sydney.edu.au/datasets/0935d5a0-1270-4e6b-9618-2224240b5a03,995,+42.733798,-76.658726,weed,amaranthus palmeri,,1405,993
+20200701 - Narrabri Chickpea BFLYS,https://weed-ai.sydney.edu.au/datasets/839a5f35-9c7b-4df3-92f4-d0fc15120920,31,-30.272457,+149.80183,weed,lolium rigidum,,98,17
+20200701 - Narrabri Chickpea BFLYS,https://weed-ai.sydney.edu.au/datasets/839a5f35-9c7b-4df3-92f4-d0fc15120920,31,-30.272457,+149.80183,weed,rapistrum rugosum,,6,2
+20200701 - Narrabri Chickpea BFLYS,https://weed-ai.sydney.edu.au/datasets/839a5f35-9c7b-4df3-92f4-d0fc15120920,31,-30.272457,+149.80183,weed,sonchus oleraceus,,94,30
+Amsinckia in chickpeas,https://weed-ai.sydney.edu.au/datasets/21675efe-9d25-4096-be76-3a541475efd4,124,-35.105657,+142.780617,weed,amsinckia,rosette,1101,124
+20190729 - Annual Ryegrass and Turnipweed in Wheat,https://weed-ai.sydney.edu.au/datasets/5158bbe5-6030-48ad-8214-b68ff8118c22,27,-30.272457,+149.80183,weed,lolium rigidum,,315,27
+20190729 - Annual Ryegrass and Turnipweed in Wheat,https://weed-ai.sydney.edu.au/datasets/5158bbe5-6030-48ad-8214-b68ff8118c22,27,-30.272457,+149.80183,weed,rapistrum rugosum,,2,2
+20200701 - Narrabri Chickpea BFLY,https://weed-ai.sydney.edu.au/datasets/78b0140f-e6b2-4afe-9672-756e4941bb35,41,-30.272457,+149.80183,weed,lolium rigidum,,100,22
+20200701 - Narrabri Chickpea BFLY,https://weed-ai.sydney.edu.au/datasets/78b0140f-e6b2-4afe-9672-756e4941bb35,41,-30.272457,+149.80183,weed,rapistrum rugosum,,5,5
+20200701 - Narrabri Chickpea BFLY,https://weed-ai.sydney.edu.au/datasets/78b0140f-e6b2-4afe-9672-756e4941bb35,41,-30.272457,+149.80183,weed,sonchus oleraceus,,74,30
+20201014 - Cobbity Wheat BFLYS,https://weed-ai.sydney.edu.au/datasets/54c0c5c4-0c15-44c7-9eeb-5affb7e8327e,129,-34.020932,+150.664883,weed,lolium rigidum,,131,71
+20201014 - Cobbity Wheat BFLYS,https://weed-ai.sydney.edu.au/datasets/54c0c5c4-0c15-44c7-9eeb-5affb7e8327e,129,-34.020932,+150.664883,weed,rapistrum rugosum,,241,90
+Broadleaf Weeds in Common Couch,https://weed-ai.sydney.edu.au/datasets/8b14a44b-bc7f-4b92-9bc0-224a2a2c4e22,78,-32.021802,+115.763709,weed,sonchus oleraceus,,4,4
+Broadleaf Weeds in Common Couch,https://weed-ai.sydney.edu.au/datasets/8b14a44b-bc7f-4b92-9bc0-224a2a2c4e22,78,-32.021802,+115.763709,weed,erigeron bonariensis,,30,22
+Broadleaf Weeds in Common Couch,https://weed-ai.sydney.edu.au/datasets/8b14a44b-bc7f-4b92-9bc0-224a2a2c4e22,78,-32.021802,+115.763709,weed,taraxacum officinale,,533,75
+20200827 - Cobbity Wheat BFLY,https://weed-ai.sydney.edu.au/datasets/3c363da3-6274-45e4-a0ce-b307cb0f89cc,39,-34.020932,+150.664883,weed,rapistrum rugosum,,40,29
+20200827 - Cobbity Wheat BFLY,https://weed-ai.sydney.edu.au/datasets/3c363da3-6274-45e4-a0ce-b307cb0f89cc,39,-34.020932,+150.664883,weed,raphanus raphanistrum,,16,14
+20201014 - Cobbity Wheat BFLY,https://weed-ai.sydney.edu.au/datasets/73468c19-b098-406a-86fa-df172caaec16,101,-34.020932,+150.664883,weed,lolium rigidum,,94,55
+20201014 - Cobbity Wheat BFLY,https://weed-ai.sydney.edu.au/datasets/73468c19-b098-406a-86fa-df172caaec16,101,-34.020932,+150.664883,weed,rapistrum rugosum,,174,71
+20190728 - Narrabri Wheat,https://weed-ai.sydney.edu.au/datasets/dc322d80-be00-49cf-822c-9e9b40e37425,184,-30.272457,+149.80183,weed,lolium rigidum,,1950,138
+20190728 - Narrabri Wheat,https://weed-ai.sydney.edu.au/datasets/dc322d80-be00-49cf-822c-9e9b40e37425,184,-30.272457,+149.80183,weed,rapistrum rugosum,,94,52
+20190728 - Narrabri Wheat,https://weed-ai.sydney.edu.au/datasets/dc322d80-be00-49cf-822c-9e9b40e37425,184,-30.272457,+149.80183,weed,sonchus oleraceus,,36,30
+20190712 - Northern WA Wheatbelt Blue Lupins,https://weed-ai.sydney.edu.au/datasets/9df290f4-a29b-44b2-9de6-24bca1cee846,217,-28.776944,+114.604108,weed,lupinus cosentinii,,4879,217
+Precision Sustainable Ag 2021 OpenCV Competition,https://weed-ai.sydney.edu.au/datasets/27813558-2b3c-496f-aab4-5e724a056213,727,+39.02615,-76.923243,weed,poaceae,,698,235
+Precision Sustainable Ag 2021 OpenCV Competition,https://weed-ai.sydney.edu.au/datasets/27813558-2b3c-496f-aab4-5e724a056213,727,+39.02615,-76.923243,weed,chenopodium album,,373,166
+Precision Sustainable Ag 2021 OpenCV Competition,https://weed-ai.sydney.edu.au/datasets/27813558-2b3c-496f-aab4-5e724a056213,727,+39.02615,-76.923243,weed,helianthus annuus,,283,149
+Precision Sustainable Ag 2021 OpenCV Competition,https://weed-ai.sydney.edu.au/datasets/27813558-2b3c-496f-aab4-5e724a056213,727,+39.02615,-76.923243,weed,vigna unguiculata,,272,148
+Precision Sustainable Ag 2021 OpenCV Competition,https://weed-ai.sydney.edu.au/datasets/27813558-2b3c-496f-aab4-5e724a056213,727,+39.02615,-76.923243,weed,erigeron canadensis,,247,112
+Precision Sustainable Ag 2021 OpenCV Competition,https://weed-ai.sydney.edu.au/datasets/27813558-2b3c-496f-aab4-5e724a056213,727,+39.02615,-76.923243,weed,abutilon theophrasti,,149,81
+Precision Sustainable Ag 2021 OpenCV Competition,https://weed-ai.sydney.edu.au/datasets/27813558-2b3c-496f-aab4-5e724a056213,727,+39.02615,-76.923243,weed,trifolium incarnatum,,1422,359
+20210317 - Wild radish in wheat,https://weed-ai.sydney.edu.au/datasets/09af32ad-2e9e-4f7c-ae08-55374824ee15,41,-34.021182,+150.66476,weed,raphanus raphanistrum,,258,41
+Wild carrot flowers in canola,https://weed-ai.sydney.edu.au/datasets/c4a80379-afda-4972-b274-82a544addd0d,52,-36.530173,+71.911407,weed,daucus carota,,3774,52
+Vegetable Crops Detection (VCD) - Maize,https://weed-ai.sydney.edu.au/datasets/f6e9953d-dc9c-4bf2-8309-e17d726030d1,1101,+46.339312,+3.432381,crop,zea mays,stem,2269,1087
+Vegetable Crops Detection (VCD) - Maize,https://weed-ai.sydney.edu.au/datasets/f6e9953d-dc9c-4bf2-8309-e17d726030d1,1101,+46.339312,+3.432381,crop,zea mays,whole-plant,2259,1101
+LincolnBeet,https://weed-ai.sydney.edu.au/datasets/dc1e5436-fa3e-4c0f-84e3-3ea875ea9db4,4307,+53.229258,-0.53462,weed,UNSPECIFIED,,22208,3136
+LincolnBeet,https://weed-ai.sydney.edu.au/datasets/dc1e5436-fa3e-4c0f-84e3-3ea875ea9db4,4307,+53.229258,-0.53462,crop,beta vulgaris,,16026,4064
+CornWeed,https://weed-ai.sydney.edu.au/datasets/aec20fe7-f607-4a4c-aca5-d0f19c7c755f,3574,+52.281646,+8.020254,crop,zea mays,,23985,3571
+CornWeed,https://weed-ai.sydney.edu.au/datasets/aec20fe7-f607-4a4c-aca5-d0f19c7c755f,3574,+52.281646,+8.020254,weed,UNSPECIFIED,,257740,3573
+RadishWheatDataset,https://weed-ai.sydney.edu.au/datasets/8b8f134f-ede4-4792-b1f7-d38fc05d8127,552,-34.021837,+150.66637,weed,raphanus raphanistrum,BBCH10-13,184,97
+RadishWheatDataset,https://weed-ai.sydney.edu.au/datasets/8b8f134f-ede4-4792-b1f7-d38fc05d8127,552,-34.021837,+150.66637,weed,raphanus raphanistrum,BBCH14-15,174,144
+RadishWheatDataset,https://weed-ai.sydney.edu.au/datasets/8b8f134f-ede4-4792-b1f7-d38fc05d8127,552,-34.021837,+150.66637,weed,raphanus raphanistrum,BBCH15-51,552,372
+RadishWheatDataset,https://weed-ai.sydney.edu.au/datasets/8b8f134f-ede4-4792-b1f7-d38fc05d8127,552,-34.021837,+150.66637,weed,raphanus raphanistrum,BBCH52-62,102,85
+Palmer amaranth,https://weed-ai.sydney.edu.au/datasets/7e03cd97-f462-439d-b4c7-b6289edcc21b,13,+30.536423,+96.423187,weed,amaranthus palmeri,,155,13
+RadishWheatDataset - 45DEG,https://weed-ai.sydney.edu.au/datasets/fa8938b3-d67c-4431-a21d-ba9cb8461d9e,294,-34.021837,+150.66637,weed,raphanus raphanistrum,BBCH10-13,239,55
+RadishWheatDataset - 45DEG,https://weed-ai.sydney.edu.au/datasets/fa8938b3-d67c-4431-a21d-ba9cb8461d9e,294,-34.021837,+150.66637,weed,raphanus raphanistrum,BBCH14-15,380,169
+RadishWheatDataset - 45DEG,https://weed-ai.sydney.edu.au/datasets/fa8938b3-d67c-4431-a21d-ba9cb8461d9e,294,-34.021837,+150.66637,weed,raphanus raphanistrum,BBCH15-51,602,217
+RadishWheatDataset - 45DEG,https://weed-ai.sydney.edu.au/datasets/fa8938b3-d67c-4431-a21d-ba9cb8461d9e,294,-34.021837,+150.66637,weed,raphanus raphanistrum,BBCH52-62,87,56
+RadishWheatDataset - 30DEG,https://weed-ai.sydney.edu.au/datasets/2a40897f-2de5-44ad-8893-d534878299b9,437,-34.021837,+150.66637,weed,raphanus raphanistrum,BBCH10-13,206,67
+RadishWheatDataset - 30DEG,https://weed-ai.sydney.edu.au/datasets/2a40897f-2de5-44ad-8893-d534878299b9,437,-34.021837,+150.66637,weed,raphanus raphanistrum,BBCH14-15,349,201
+RadishWheatDataset - 30DEG,https://weed-ai.sydney.edu.au/datasets/2a40897f-2de5-44ad-8893-d534878299b9,437,-34.021837,+150.66637,weed,raphanus raphanistrum,BBCH15-51,507,284
+RadishWheatDataset - 30DEG,https://weed-ai.sydney.edu.au/datasets/2a40897f-2de5-44ad-8893-d534878299b9,437,-34.021837,+150.66637,weed,raphanus raphanistrum,BBCH52-62,43,33
+Brownlow Hill Fireweed,https://weed-ai.sydney.edu.au/datasets/24b34712-c31b-4efc-9790-406d1f14d840,20,-34.035563,+150.653633,weed,senecio madagascariensis,,20,20
+RoboWeedMap,https://weed-ai.sydney.edu.au/datasets/aa0cb351-9b5a-400f-bb2e-ed02b2da3699,1147,+55.566451,+10.123196,weed,poaceae,,19221,884
+RoboWeedMap,https://weed-ai.sydney.edu.au/datasets/aa0cb351-9b5a-400f-bb2e-ed02b2da3699,1147,+55.566451,+10.123196,weed,brassicaceae,,41810,1076
+Multiple weed species detection,https://weed-ai.sydney.edu.au/datasets/84fd3c3f-dd3e-400b-ac5a-d18ca712c3d0,905,+42.733798,-76.658726,weed,chenopodium album,,464,311
+Multiple weed species detection,https://weed-ai.sydney.edu.au/datasets/84fd3c3f-dd3e-400b-ac5a-d18ca712c3d0,905,+42.733798,-76.658726,weed,amaranthus palmeri,,493,260
+Multiple weed species detection,https://weed-ai.sydney.edu.au/datasets/84fd3c3f-dd3e-400b-ac5a-d18ca712c3d0,905,+42.733798,-76.658726,weed,xanthium strumarium,,96,83
+Multiple weed species detection,https://weed-ai.sydney.edu.au/datasets/84fd3c3f-dd3e-400b-ac5a-d18ca712c3d0,905,+42.733798,-76.658726,weed,taraxacum officinale,,144,99
+Multiple weed species detection,https://weed-ai.sydney.edu.au/datasets/84fd3c3f-dd3e-400b-ac5a-d18ca712c3d0,905,+42.733798,-76.658726,weed,amaranthus tuberculatus,,197,152
+Danish Winter Radish Weeds,https://weed-ai.sydney.edu.au/datasets/42aabffe-9df4-4b43-b756-8022293b75fc,30,+55.676153,+12.311847,weed,raphanus raphanistrum,,84,30
+Emerging ryegrass seedlings in a fallow soil,https://weed-ai.sydney.edu.au/datasets/c828f20d-9b3b-451a-b1a3-eb35398760da,14,-36.531637773161556,-71.9219354387671,weed,lolium multiflorum,,2806,14
+Danish pasture weeds - wild radish creeping thistle,https://weed-ai.sydney.edu.au/datasets/a6a1f731-f887-4a8b-be74-db30132c6898,10,+55.712797,+12.213646,weed,cirsium arvense,,76,10
+Danish pasture weeds - wild radish creeping thistle,https://weed-ai.sydney.edu.au/datasets/a6a1f731-f887-4a8b-be74-db30132c6898,10,+55.712797,+12.213646,weed,raphanus raphanistrum,,23,10
+Danish thistles,https://weed-ai.sydney.edu.au/datasets/9646f5bf-9cd1-4988-accc-e1663774b046,243,+55.675473,+12.303226,weed,cirsium vulgare,,482,243
+Palmer amaranth Growth Stage - 8 (PAGS8),https://weed-ai.sydney.edu.au/datasets/5c78d067-8750-4803-9cbe-57df8fae55e4,614,+30.537516,-96.422415,weed,amaranthus palmeri,BBCH10-12,509,65
+Palmer amaranth Growth Stage - 8 (PAGS8),https://weed-ai.sydney.edu.au/datasets/5c78d067-8750-4803-9cbe-57df8fae55e4,614,+30.537516,-96.422415,weed,amaranthus palmeri,BBCH13-16,314,121
+Palmer amaranth Growth Stage - 8 (PAGS8),https://weed-ai.sydney.edu.au/datasets/5c78d067-8750-4803-9cbe-57df8fae55e4,614,+30.537516,-96.422415,weed,amaranthus palmeri,BBCH17-19,246,175
+Palmer amaranth Growth Stage - 8 (PAGS8),https://weed-ai.sydney.edu.au/datasets/5c78d067-8750-4803-9cbe-57df8fae55e4,614,+30.537516,-96.422415,weed,amaranthus palmeri,BBCH51-59,68,63
+Palmer amaranth Growth Stage - 8 (PAGS8),https://weed-ai.sydney.edu.au/datasets/5c78d067-8750-4803-9cbe-57df8fae55e4,614,+30.537516,-96.422415,weed,amaranthus palmeri,BBCH60-69,65,57
+Palmer amaranth Growth Stage - 8 (PAGS8),https://weed-ai.sydney.edu.au/datasets/5c78d067-8750-4803-9cbe-57df8fae55e4,614,+30.537516,-96.422415,weed,amaranthus palmeri,BBCH13-29 - bushy,361,237
+Palmer amaranth Growth Stage - 8 (PAGS8),https://weed-ai.sydney.edu.au/datasets/5c78d067-8750-4803-9cbe-57df8fae55e4,614,+30.537516,-96.422415,weed,amaranthus palmeri,BBCH51-59 - bushy,202,170
+Palmer amaranth Growth Stage - 8 (PAGS8),https://weed-ai.sydney.edu.au/datasets/5c78d067-8750-4803-9cbe-57df8fae55e4,614,+30.537516,-96.422415,weed,amaranthus palmeri,BBCH60-69 - bushy,175,147
+RadishWheatDataset - 60DEG,https://weed-ai.sydney.edu.au/datasets/ae2c140f-458a-4c1b-baeb-14bb9157b4ec,130,-34.021837,+150.66637,weed,raphanus raphanistrum,BBCH10-13,309,30
+RadishWheatDataset - 60DEG,https://weed-ai.sydney.edu.au/datasets/ae2c140f-458a-4c1b-baeb-14bb9157b4ec,130,-34.021837,+150.66637,weed,raphanus raphanistrum,BBCH14-15,416,89
+RadishWheatDataset - 60DEG,https://weed-ai.sydney.edu.au/datasets/ae2c140f-458a-4c1b-baeb-14bb9157b4ec,130,-34.021837,+150.66637,weed,raphanus raphanistrum,BBCH15-51,310,77
+RadishWheatDataset - 60DEG,https://weed-ai.sydney.edu.au/datasets/ae2c140f-458a-4c1b-baeb-14bb9157b4ec,130,-34.021837,+150.66637,weed,raphanus raphanistrum,BBCH52-62,54,22
+CottonWeedDet12,https://weed-ai.sydney.edu.au/datasets/2c14915b-0827-4b65-9908-d2a6df0d48f3,5648,+33.453808,-88.790587,weed,eclipta,,865,576
+CottonWeedDet12,https://weed-ai.sydney.edu.au/datasets/2c14915b-0827-4b65-9908-d2a6df0d48f3,5648,+33.453808,-88.790587,weed,ipomoea indica,,1344,1149
+CottonWeedDet12,https://weed-ai.sydney.edu.au/datasets/2c14915b-0827-4b65-9908-d2a6df0d48f3,5648,+33.453808,-88.790587,weed,eleusine indica,,214,183
+CottonWeedDet12,https://weed-ai.sydney.edu.au/datasets/2c14915b-0827-4b65-9908-d2a6df0d48f3,5648,+33.453808,-88.790587,weed,sida rhombifolia,,486,433
+CottonWeedDet12,https://weed-ai.sydney.edu.au/datasets/2c14915b-0827-4b65-9908-d2a6df0d48f3,5648,+33.453808,-88.790587,weed,physalis angulata,,123,111
+CottonWeedDet12,https://weed-ai.sydney.edu.au/datasets/2c14915b-0827-4b65-9908-d2a6df0d48f3,5648,+33.453808,-88.790587,weed,senna obtusifolia,,243,198
+CottonWeedDet12,https://weed-ai.sydney.edu.au/datasets/2c14915b-0827-4b65-9908-d2a6df0d48f3,5648,+33.453808,-88.790587,weed,amaranthus palmeri,,348,305
+CottonWeedDet12,https://weed-ai.sydney.edu.au/datasets/2c14915b-0827-4b65-9908-d2a6df0d48f3,5648,+33.453808,-88.790587,weed,euphorbia maculata,,956,671
+CottonWeedDet12,https://weed-ai.sydney.edu.au/datasets/2c14915b-0827-4b65-9908-d2a6df0d48f3,5648,+33.453808,-88.790587,weed,portulaca oleracea,,992,652
+CottonWeedDet12,https://weed-ai.sydney.edu.au/datasets/2c14915b-0827-4b65-9908-d2a6df0d48f3,5648,+33.453808,-88.790587,weed,mollugo verticillata,,962,564
+CottonWeedDet12,https://weed-ai.sydney.edu.au/datasets/2c14915b-0827-4b65-9908-d2a6df0d48f3,5648,+33.453808,-88.790587,weed,amaranthus tuberculatus,,1959,1413
+CottonWeedDet12,https://weed-ai.sydney.edu.au/datasets/2c14915b-0827-4b65-9908-d2a6df0d48f3,5648,+33.453808,-88.790587,weed,ambrosia artemisiifolia,,896,512
+Vegetable Crops Detection (VCD) - Beans,https://weed-ai.sydney.edu.au/datasets/499647c5-fdd2-472f-bccb-ee4acda631c9,770,+46.339312,+3.432381,crop,phaseolus vulgaris,stem,2915,770
+Vegetable Crops Detection (VCD) - Beans,https://weed-ai.sydney.edu.au/datasets/499647c5-fdd2-472f-bccb-ee4acda631c9,770,+46.339312,+3.432381,crop,phaseolus vulgaris,whole-plant,2910,770
+ImageWeeds (brassica),https://weed-ai.sydney.edu.au/datasets/a048518f-9651-4c8a-8c28-38ff87f3e9c4,44,+46.9005,-97.21136,weed,bassia scoparia,,61,27
+ImageWeeds (brassica),https://weed-ai.sydney.edu.au/datasets/a048518f-9651-4c8a-8c28-38ff87f3e9c4,44,+46.9005,-97.21136,weed,erigeron canadensis,,35,23
+ImageWeeds (brassica),https://weed-ai.sydney.edu.au/datasets/a048518f-9651-4c8a-8c28-38ff87f3e9c4,44,+46.9005,-97.21136,weed,amaranthus retroflexus,,24,12
+ImageWeeds (brassica),https://weed-ai.sydney.edu.au/datasets/a048518f-9651-4c8a-8c28-38ff87f3e9c4,44,+46.9005,-97.21136,weed,amaranthus tuberculatus,,47,22
+ImageWeeds (brassica),https://weed-ai.sydney.edu.au/datasets/a048518f-9651-4c8a-8c28-38ff87f3e9c4,44,+46.9005,-97.21136,weed,ambrosia artemisiifolia,,67,25
+ImageWeeds (flax),https://weed-ai.sydney.edu.au/datasets/ab3da4ea-4cb4-407a-a007-7052ed3a7850,115,+46.9005,-97.21136,weed,bassia scoparia,,145,60
+ImageWeeds (flax),https://weed-ai.sydney.edu.au/datasets/ab3da4ea-4cb4-407a-a007-7052ed3a7850,115,+46.9005,-97.21136,weed,erigeron canadensis,,80,48
+ImageWeeds (flax),https://weed-ai.sydney.edu.au/datasets/ab3da4ea-4cb4-407a-a007-7052ed3a7850,115,+46.9005,-97.21136,weed,amaranthus retroflexus,,80,36
+ImageWeeds (flax),https://weed-ai.sydney.edu.au/datasets/ab3da4ea-4cb4-407a-a007-7052ed3a7850,115,+46.9005,-97.21136,weed,amaranthus tuberculatus,,73,36
+ImageWeeds (flax),https://weed-ai.sydney.edu.au/datasets/ab3da4ea-4cb4-407a-a007-7052ed3a7850,115,+46.9005,-97.21136,weed,ambrosia artemisiifolia,,139,53
+ImageWeeds (lentils),https://weed-ai.sydney.edu.au/datasets/9d1778f9-4f60-4f58-8bba-a72011e29555,28,+46.9005,-97.21136,weed,bassia scoparia,,45,18
+ImageWeeds (lentils),https://weed-ai.sydney.edu.au/datasets/9d1778f9-4f60-4f58-8bba-a72011e29555,28,+46.9005,-97.21136,weed,erigeron canadensis,,16,11
+ImageWeeds (lentils),https://weed-ai.sydney.edu.au/datasets/9d1778f9-4f60-4f58-8bba-a72011e29555,28,+46.9005,-97.21136,weed,amaranthus retroflexus,,15,8
+ImageWeeds (lentils),https://weed-ai.sydney.edu.au/datasets/9d1778f9-4f60-4f58-8bba-a72011e29555,28,+46.9005,-97.21136,weed,amaranthus tuberculatus,,44,16
+ImageWeeds (lentils),https://weed-ai.sydney.edu.au/datasets/9d1778f9-4f60-4f58-8bba-a72011e29555,28,+46.9005,-97.21136,weed,ambrosia artemisiifolia,,40,20
+ImageWeeds (field_peas),https://weed-ai.sydney.edu.au/datasets/1807b958-5002-4133-aba3-7a757a690a44,70,+46.9005,-97.21136,weed,bassia scoparia,,75,35
+ImageWeeds (field_peas),https://weed-ai.sydney.edu.au/datasets/1807b958-5002-4133-aba3-7a757a690a44,70,+46.9005,-97.21136,weed,erigeron canadensis,,47,26
+ImageWeeds (field_peas),https://weed-ai.sydney.edu.au/datasets/1807b958-5002-4133-aba3-7a757a690a44,70,+46.9005,-97.21136,weed,amaranthus retroflexus,,32,13
+ImageWeeds (field_peas),https://weed-ai.sydney.edu.au/datasets/1807b958-5002-4133-aba3-7a757a690a44,70,+46.9005,-97.21136,weed,amaranthus tuberculatus,,40,16
+ImageWeeds (field_peas),https://weed-ai.sydney.edu.au/datasets/1807b958-5002-4133-aba3-7a757a690a44,70,+46.9005,-97.21136,weed,ambrosia artemisiifolia,,69,35
+ImageWeeds (zea mays),https://weed-ai.sydney.edu.au/datasets/1a9e04c8-80c3-41f1-a7af-a9d3f39d0feb,94,+46.9005,-97.21136,weed,bassia scoparia,,104,48
+ImageWeeds (zea mays),https://weed-ai.sydney.edu.au/datasets/1a9e04c8-80c3-41f1-a7af-a9d3f39d0feb,94,+46.9005,-97.21136,weed,erigeron canadensis,,62,39
+ImageWeeds (zea mays),https://weed-ai.sydney.edu.au/datasets/1a9e04c8-80c3-41f1-a7af-a9d3f39d0feb,94,+46.9005,-97.21136,weed,amaranthus retroflexus,,68,31
+ImageWeeds (zea mays),https://weed-ai.sydney.edu.au/datasets/1a9e04c8-80c3-41f1-a7af-a9d3f39d0feb,94,+46.9005,-97.21136,weed,amaranthus tuberculatus,,88,40
+ImageWeeds (zea mays),https://weed-ai.sydney.edu.au/datasets/1a9e04c8-80c3-41f1-a7af-a9d3f39d0feb,94,+46.9005,-97.21136,weed,ambrosia artemisiifolia,,129,53
+ImageWeeds (beta vulgaris),https://weed-ai.sydney.edu.au/datasets/327558ca-3bc2-4b55-b0ea-0319aeb3636f,27,+46.9005,-97.21136,weed,bassia scoparia,,26,13
+ImageWeeds (beta vulgaris),https://weed-ai.sydney.edu.au/datasets/327558ca-3bc2-4b55-b0ea-0319aeb3636f,27,+46.9005,-97.21136,weed,erigeron canadensis,,14,10
+ImageWeeds (beta vulgaris),https://weed-ai.sydney.edu.au/datasets/327558ca-3bc2-4b55-b0ea-0319aeb3636f,27,+46.9005,-97.21136,weed,amaranthus retroflexus,,4,2
+ImageWeeds (beta vulgaris),https://weed-ai.sydney.edu.au/datasets/327558ca-3bc2-4b55-b0ea-0319aeb3636f,27,+46.9005,-97.21136,weed,amaranthus tuberculatus,,20,7
+ImageWeeds (beta vulgaris),https://weed-ai.sydney.edu.au/datasets/327558ca-3bc2-4b55-b0ea-0319aeb3636f,27,+46.9005,-97.21136,weed,ambrosia artemisiifolia,,43,19
+ImageWeeds (glycine max),https://weed-ai.sydney.edu.au/datasets/cfe6e919-6ddd-4b4e-aa63-58483841a11f,81,+46.9005,-97.21136,weed,bassia scoparia,,63,35
+ImageWeeds (glycine max),https://weed-ai.sydney.edu.au/datasets/cfe6e919-6ddd-4b4e-aa63-58483841a11f,81,+46.9005,-97.21136,weed,erigeron canadensis,,74,40
+ImageWeeds (glycine max),https://weed-ai.sydney.edu.au/datasets/cfe6e919-6ddd-4b4e-aa63-58483841a11f,81,+46.9005,-97.21136,weed,amaranthus retroflexus,,36,19
+ImageWeeds (glycine max),https://weed-ai.sydney.edu.au/datasets/cfe6e919-6ddd-4b4e-aa63-58483841a11f,81,+46.9005,-97.21136,weed,amaranthus tuberculatus,,34,13
+ImageWeeds (glycine max),https://weed-ai.sydney.edu.au/datasets/cfe6e919-6ddd-4b4e-aa63-58483841a11f,81,+46.9005,-97.21136,weed,ambrosia artemisiifolia,,77,29
+Vegetable Crops Detection (VCD) - Leeks,https://weed-ai.sydney.edu.au/datasets/2adbf2e1-ebc1-48fd-bbbc-76ef8b97e255,601,+46.339312,+3.432381,crop,allium ampeloprasum,stem,3192,601
+Vegetable Crops Detection (VCD) - Leeks,https://weed-ai.sydney.edu.au/datasets/2adbf2e1-ebc1-48fd-bbbc-76ef8b97e255,601,+46.339312,+3.432381,crop,allium ampeloprasum,whole-plant,3070,601

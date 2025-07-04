@@ -1,0 +1,61 @@
+# Node dependencies
+node_modules/
+
+# Lock files
+package-lock.json
+yarn.lock
+
+# Netlify build output
+/.netlify/
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.env/
+venv/
+ENV/
+env/
+.venv/
+
+# macOS
+.DS_Store
+
+# Testing
+test.*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# IDEs and editors
+.vscode/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln
+*.sw?
+
+# Environment variables
+.env.local
+.env.*.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Reports
+coverage/
+reports/
+htmlcov/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Misc
+*.log

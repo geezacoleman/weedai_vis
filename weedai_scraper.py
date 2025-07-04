@@ -33,6 +33,7 @@ class WeedAIHandler:
             'crop': '#bc5090',
             'unknown': '#ffa600'
         }
+        self.df = None
 
     def scrape_datasets(self) -> None:
         """
@@ -133,16 +134,16 @@ class WeedAIHandler:
         Load dataset information from CSV file
         """
         try:
-            df = pd.read_csv(self.csv_path)
-            df['longitude'] = pd.to_numeric(df['longitude'], errors='coerce')
+            self.df = pd.read_csv(self.csv_path)
+            self.df['longitude'] = pd.to_numeric(self.df['longitude'], errors='coerce')
         except KeyError:
-            df = pd.read_csv(self.csv_path, sep=';')
-            df['longitude'] = pd.to_numeric(df['longitude'], errors='coerce')
+            self.df = pd.read_csv(self.csv_path, sep=';')
+            self.df['longitude'] = pd.to_numeric(self.df['longitude'], errors='coerce')
 
-        df = df.dropna(subset=['latitude', 'longitude'])
+        self.df = self.df.dropna(subset=['latitude', 'longitude'])
 
         # Process data and build dataset_info dictionary
-        for _, row in df.iterrows():
+        for _, row in self.df.iterrows():
             dataset_name = row['dataset_name']
 
             if dataset_name not in self.dataset_info:
@@ -364,6 +365,14 @@ class WeedAIHandler:
         <strong>Total Images:</strong> {info['total_images']}<br>
         <strong>Bounding Boxes:</strong> {info['n_boxes']}<br>
         <strong>URL:</strong> <a href="{info['url']}" target="_blank">Dataset Link</a><br>
+        <!-- star button & count -->
+        <button
+          id="star-btn-{dataset_name}"
+          onclick="recordStar('{dataset_name}'); return false;"
+          style="border:none; background:transparent; cursor:pointer;"
+          aria-label="Star this dataset"
+        >⭐</button>
+        <span id="star-count-{dataset_name}">0</span><br>
         <br>
         <strong>Class Distribution:</strong><br>
         <div style="max-height:200px; overflow-y:auto;">
@@ -432,90 +441,139 @@ class WeedAIHandler:
     def _add_title_and_legend(self, m: folium.Map) -> None:
         """
         Inject a Bootstrap navbar, a clean page header (with upload button),
-        and a modern legend (three-dot “Image number” + pie-icon) into the map HTML.
+        modern legend, and dataset statistics into the map HTML.
         """
-        # 1) Global CSS
-        css = """
-        <style>
-          /* push content below fixed navbar */
-          body { padding-top: 70px; }
+        # Compute statistics
+        num_crops = self.df.loc[self.df['type'] == 'crop', 'class'].nunique()
+        num_weeds = self.df.loc[self.df['type'] == 'weed', 'class'].nunique()
+        num_objects = self.df['n_boxes'].fillna(0).sum()
+        total_images = (self.df.drop_duplicates(subset='dataset_name')['total_images'].fillna(0).sum())
 
-          /* Modern header */
-          .page-header {
-            background: #fff;
-            padding: 1rem 2rem;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            margin-bottom: 1rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-          }
-          .page-header h1 {
-            margin: 0;
-            font-size: 2rem;
-            font-weight: 700;
-            color: #2C3E50;
-            letter-spacing: 1px;
-          }
-          .page-header p {
-            margin: 0.25rem 0 0;
-            color: #555;
-            font-size: 1rem;
-          }
-
-          /* Legend card */
-          .legend {
-            position: fixed;
-            bottom: 1rem;
-            right: 1rem;
-            background: #fff;
-            padding: 1rem;
-            border-radius: 0.5rem;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-            font-size: 0.85rem;
-            line-height: 1.4;
-            max-width: 240px;
-            z-index: 9999;
-          }
-          .legend h5 {
-            margin: 0 0 0.75rem;
-            font-size: 1rem;
-          }
-          .legend ul {
-            list-style: none;
-            padding: 0;
-            margin: 0 0 1rem;
-          }
-          .legend li {
-            display: flex;
-            align-items: center;
-            margin-bottom: 0.5rem;
-          }
-          .legend .dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            margin-right: 0.5rem;
-            flex-shrink: 0;
-          }
-          .legend .pie-icon {
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            background-image: conic-gradient(
-              #E76F51 0 33%,
-              #2A9D8F 33% 66%,
-              #264653 66% 100%
-            );
-            margin-right: 0.5rem;
-            flex-shrink: 0;
-          }
-        </style>
+        # Stats HTML
+        stats_html = f"""
+        <div class="page-stats" style="background:#f9f9f9; padding:1rem 2rem; margin-bottom:1rem; border-radius:0.5rem; box-shadow:0 1px 3px rgba(0,0,0,0.1);">
+          <strong>Annotated Crop Species:</strong> {num_crops} &nbsp;&nbsp;
+          <strong>Annotated Weed Species:</strong> {num_weeds} &nbsp;&nbsp;
+          <strong>Total Objects:</strong> {num_objects} &nbsp;&nbsp;
+          <strong>Total Images:</strong> {total_images}
+        </div>
         """
+
+        # Global CSS
+        css = """<style>
+              /* push content below fixed navbar */
+              body {
+                padding-top: 70px;
+              }
+            
+              /* Page header */
+              .page-header {
+                background: #fff;
+                padding: 1rem 2rem;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                margin-bottom: 0.5rem;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+              }
+            
+              .page-header h1 {
+                margin: 0;
+                font-size: 2rem;
+                font-weight: 700;
+                color: #2C3E50;
+                letter-spacing: 1px;
+              }
+            
+              .page-header p {
+                margin: 0.25rem 0 0;
+                color: #555;
+                font-size: 1rem;
+              }
+            
+              /* Statistics panel */
+              .page-stats {
+                background: #f9f9f9;
+                padding: 1rem 2rem;
+                margin-bottom: 1rem;
+                border-radius: 0.5rem;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+                font-size: 1rem;
+                color: #333;
+                display: flex;
+                gap: 2rem;
+              }
+            
+              /* Legend card */
+              .legend {
+                position: fixed;
+                bottom: 1rem;
+                right: 1rem;
+                background: #fff;
+                padding: 1rem;
+                border-radius: 0.5rem;
+                box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+                font-size: 0.85rem;
+                line-height: 1.4;
+                max-width: 240px;
+                z-index: 9999;
+              }
+            
+              .legend h5 {
+                margin-top: 0;
+                margin-bottom: 0.5rem;
+                font-size: 1rem;
+                color: #2C3E50;
+              }
+            
+              .legend ul {
+                list-style: none;
+                padding: 0;
+                margin: 0 0 1rem 0;
+              }
+            
+              .legend li {
+                display: flex;
+                align-items: center;
+                margin-bottom: 0.5rem;
+              }
+            
+              /* Dot markers for classes */
+              .legend .dot {
+                display: inline-block;
+                width: 10px;
+                height: 10px;
+                border-radius: 50%;
+                margin-right: 0.5rem;
+              }
+            
+              /* Pie‐chart icon for proportions */
+              .pie-icon {
+                display: inline-block;
+                width: 10px;
+                height: 10px;
+                border-radius: 50%;
+                background: conic-gradient(
+                  #003f5c 0% 50%,
+                  #bc5090 0% 100%
+                );
+                margin-right: 0.5rem;
+              }
+            
+              /* Utility styles */
+              a.btn-primary {
+                background-color: #2C3E50;
+                border-color: #2C3E50;
+              }
+              a.btn-primary:hover {
+                background-color: #1f2a38;
+                border-color: #1f2a38;
+              }
+            </style>"""
         m.get_root().html.add_child(folium.Element(css))
 
-        # 2) Navbar + header (with Upload button)
-        navbar_and_header = """
+        # Navbar + header + stats
+        navbar_and_header = f"""
         <!-- Bootstrap navbar -->
         <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top shadow-sm">
           <div class="container-fluid">
@@ -552,9 +610,9 @@ class WeedAIHandler:
             Upload Your Data
           </a>
         </header>
+        {stats_html}
         """
         m.get_root().html.add_child(folium.Element(navbar_and_header))
-
 
         legend = """
         <div class="legend">
@@ -582,6 +640,71 @@ class WeedAIHandler:
         </div>
         """
         m.get_root().html.add_child(folium.Element(legend))
+
+        # 1) Floating leaderboard container
+        leaderboard_html = """
+                <div id="leaderboard" style="
+                    position: fixed; top: 80px; right: 1rem;
+                    background: #fff; padding: 1rem; border-radius: .5rem;
+                    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+                    max-width: 200px; font-size: 0.9rem; z-index: 9999;
+                ">
+                  <h5>Most-Starred Datasets</h5>
+                  <ol id="leaderboard-list" style="padding-left:1.2em; margin:0;"></ol>
+                </div>
+                """
+        m.get_root().html.add_child(folium.Element(leaderboard_html))
+
+        # 2) JS for recordStar() and fetchLeaderboard()
+        star_js = """
+                <script>
+                // Fetch top-10 and render the floating leaderboard
+                async function fetchLeaderboard() {
+                  let res = await fetch('/.netlify/functions/leaderboard');
+                  if (!res.ok) return;
+                  let data = await res.json();
+                  let ol = document.getElementById('leaderboard-list');
+                  ol.innerHTML = '';
+                  data.forEach(item => {
+                    let li = document.createElement('li');
+                    li.textContent = `${item.dataset_name} (${item.stars} ⭐)`;
+                    ol.appendChild(li);
+                  });
+                }
+
+                // Called when user clicks the star button
+                async function recordStar(name) {
+                  const btn = document.getElementById('star-btn-'+name);
+                  if (btn.disabled) return;
+                  btn.disabled = true;
+                  // POST to your Netlify function
+                  await fetch('/.netlify/functions/star', {
+                    method: 'POST',
+                    headers: {'Content-Type':'application/json'},
+                    body: JSON.stringify({ name })
+                  });
+                  // bump the local counter
+                  let span = document.getElementById('star-count-'+name);
+                  span.textContent = parseInt(span.textContent||'0') + 1;
+                  // refresh leaderboard
+                  fetchLeaderboard();
+                }
+
+                // On page load, populate leaderboard and disable any already-starred buttons
+                window.addEventListener('DOMContentLoaded', () => {
+                  fetchLeaderboard();
+                  document.querySelectorAll('[id^="star-btn-"]').forEach(btn => {
+                    let name = btn.id.replace('star-btn-','');
+                    if (localStorage.getItem('starred_'+name)) {
+                      btn.disabled = true;
+                      document.getElementById('star-count-'+name).textContent = 
+                        localStorage.getItem('star-count-'+name) || '0';
+                    }
+                  });
+                });
+                </script>
+                """
+        m.get_root().html.add_child(folium.Element(star_js))
 
     def run_scrape_and_visualize(self) -> None:
         """
