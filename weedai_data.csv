@@ -39,7 +39,7 @@ Precision Sustainable Ag 2021 OpenCV Competition,https://weed-ai.sydney.edu.au/d
 Precision Sustainable Ag 2021 OpenCV Competition,https://weed-ai.sydney.edu.au/datasets/27813558-2b3c-496f-aab4-5e724a056213,727,+39.02615,-76.923243,weed,abutilon theophrasti,,149,81
 Precision Sustainable Ag 2021 OpenCV Competition,https://weed-ai.sydney.edu.au/datasets/27813558-2b3c-496f-aab4-5e724a056213,727,+39.02615,-76.923243,weed,trifolium incarnatum,,1422,359
 20210317 - Wild radish in wheat,https://weed-ai.sydney.edu.au/datasets/09af32ad-2e9e-4f7c-ae08-55374824ee15,41,-34.021182,+150.66476,weed,raphanus raphanistrum,,258,41
-Wild carrot flowers in canola,https://weed-ai.sydney.edu.au/datasets/c4a80379-afda-4972-b274-82a544addd0d,52,-36.530173,+71.911407,weed,daucus carota,,3774,52
+Wild carrot flowers in canola,https://weed-ai.sydney.edu.au/datasets/c4a80379-afda-4972-b274-82a544addd0d,52,-36.530173,-71.911407,weed,daucus carota,,3774,52
 Vegetable Crops Detection (VCD) - Maize,https://weed-ai.sydney.edu.au/datasets/f6e9953d-dc9c-4bf2-8309-e17d726030d1,1101,+46.339312,+3.432381,crop,zea mays,stem,2269,1087
 Vegetable Crops Detection (VCD) - Maize,https://weed-ai.sydney.edu.au/datasets/f6e9953d-dc9c-4bf2-8309-e17d726030d1,1101,+46.339312,+3.432381,crop,zea mays,whole-plant,2259,1101
 LincolnBeet,https://weed-ai.sydney.edu.au/datasets/dc1e5436-fa3e-4c0f-84e3-3ea875ea9db4,4307,+53.229258,-0.53462,weed,UNSPECIFIED,,22208,3136
@@ -50,7 +50,7 @@ RadishWheatDataset,https://weed-ai.sydney.edu.au/datasets/8b8f134f-ede4-4792-b1f
 RadishWheatDataset,https://weed-ai.sydney.edu.au/datasets/8b8f134f-ede4-4792-b1f7-d38fc05d8127,552,-34.021837,+150.66637,weed,raphanus raphanistrum,BBCH14-15,174,144
 RadishWheatDataset,https://weed-ai.sydney.edu.au/datasets/8b8f134f-ede4-4792-b1f7-d38fc05d8127,552,-34.021837,+150.66637,weed,raphanus raphanistrum,BBCH15-51,552,372
 RadishWheatDataset,https://weed-ai.sydney.edu.au/datasets/8b8f134f-ede4-4792-b1f7-d38fc05d8127,552,-34.021837,+150.66637,weed,raphanus raphanistrum,BBCH52-62,102,85
-Palmer amaranth,https://weed-ai.sydney.edu.au/datasets/7e03cd97-f462-439d-b4c7-b6289edcc21b,13,+30.536423,+96.423187,weed,amaranthus palmeri,,155,13
+Palmer amaranth,https://weed-ai.sydney.edu.au/datasets/7e03cd97-f462-439d-b4c7-b6289edcc21b,13,+30.536423,-96.423187,weed,amaranthus palmeri,,155,13
 RadishWheatDataset - 45DEG,https://weed-ai.sydney.edu.au/datasets/fa8938b3-d67c-4431-a21d-ba9cb8461d9e,294,-34.021837,+150.66637,weed,raphanus raphanistrum,BBCH10-13,239,55
 RadishWheatDataset - 45DEG,https://weed-ai.sydney.edu.au/datasets/fa8938b3-d67c-4431-a21d-ba9cb8461d9e,294,-34.021837,+150.66637,weed,raphanus raphanistrum,BBCH14-15,380,169
 RadishWheatDataset - 45DEG,https://weed-ai.sydney.edu.au/datasets/fa8938b3-d67c-4431-a21d-ba9cb8461d9e,294,-34.021837,+150.66637,weed,raphanus raphanistrum,BBCH15-51,602,217
