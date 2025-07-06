@@ -6,8 +6,9 @@ import io
 import base64
 import csv
 import re
-from collections import defaultdict, Counter
-from typing import Dict, List, Tuple, Optional, Any
+import html
+from collections import Counter
+from typing import Dict, List, Optional, Any
 from playwright.sync_api import sync_playwright
 from bs4 import BeautifulSoup
 
@@ -353,30 +354,52 @@ class WeedAIHandler:
         Build the HTML for each marker popup,
         injecting a star button and count span that rely on LocalStorage.
         """
+        # Use exact dataset name - no modifications
         url = info['url']
         classes = info.get('classes', [])
         class_list = "".join(f"<li>{c['class_name']} ({c['type']})</li>" for c in classes)
 
-        js_safe_name = dataset_name.replace("'", "\\'").replace('"', '\\"')
+        # Properly escape for HTML and JavaScript
+        html_safe_name = html.escape(dataset_name, quote=True)
+        js_safe_name = dataset_name.replace("\\", "\\\\").replace("'", "\\'").replace('"', '\\"')
+
+        # Generate a unique ID for this popup
+        unique_id = abs(hash(dataset_name)) % 1000000
 
         return f"""
         <div>
-          <strong>{dataset_name}</strong><br>
+          <strong>{html.escape(dataset_name)}</strong><br>
           <strong>URL:</strong>
             <a href="{url}" target="_blank">Dataset Link</a><br>
 
           <!-- star button & client-side counter -->
           <button
             class="star-btn"
-            data-dataset="{dataset_name}"
+            data-dataset="{html_safe_name}"
             onclick="recordStar('{js_safe_name}'); return false;"
             style="border:none; background:transparent; cursor:pointer; font-size:1.2rem;"
             aria-label="Star this dataset"
           >⭐</button>
-          <span class="star-count" data-dataset="{dataset_name}">0</span><br>
+          <span id="star-count-{unique_id}" class="star-count" data-dataset="{html_safe_name}">0</span><br>
 
           <strong>Classes:</strong>
           <ul>{class_list}</ul>
+
+          <!-- Inline script to update count when popup opens -->
+          <script>
+            (function() {{
+              const span = document.getElementById('star-count-{unique_id}');
+              if (span && window.starCounts && window.starCounts['{js_safe_name}']) {{
+                span.textContent = window.starCounts['{js_safe_name}'];
+              }}
+
+              // Check if already starred
+              if (localStorage.getItem('starred_{js_safe_name}')) {{
+                const btns = document.querySelectorAll('.star-btn[data-dataset="{html_safe_name}"]');
+                btns.forEach(btn => btn.disabled = true);
+              }}
+            }})();
+          </script>
         </div>
         """
 
