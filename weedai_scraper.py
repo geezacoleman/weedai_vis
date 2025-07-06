@@ -353,25 +353,27 @@ class WeedAIHandler:
         Build the HTML for each marker popup,
         injecting a star button and count span that rely on LocalStorage.
         """
-        display_name = dataset_name
         url = info['url']
         classes = info.get('classes', [])
         class_list = "".join(f"<li>{c['class_name']} ({c['type']})</li>" for c in classes)
 
+        js_safe_name = dataset_name.replace("'", "\\'").replace('"', '\\"')
+
         return f"""
         <div>
-          <strong>{display_name}</strong><br>
+          <strong>{dataset_name}</strong><br>
           <strong>URL:</strong>
             <a href="{url}" target="_blank">Dataset Link</a><br>
 
           <!-- star button & client-side counter -->
           <button
-            id="star-btn-{display_name}"
-            onclick="recordStar('{display_name}'); return false;"
+            class="star-btn"
+            data-dataset="{dataset_name}"
+            onclick="recordStar('{js_safe_name}'); return false;"
             style="border:none; background:transparent; cursor:pointer; font-size:1.2rem;"
             aria-label="Star this dataset"
           >⭐</button>
-          <span id="star-count-{display_name}">0</span><br>
+          <span class="star-count" data-dataset="{dataset_name}">0</span><br>
 
           <strong>Classes:</strong>
           <ul>{class_list}</ul>
@@ -688,115 +690,102 @@ class WeedAIHandler:
         """
         m.get_root().html.add_child(folium.Element(leaderboard_html))
 
-        # Fixed JS for stars and toggle functionality
         star_js = """
         <script>
-        // Global function definitions
-        window.recordStar = async function(name) {
+        // 1) Fetch and render top-10 starred datasets in the sidebar
+        async function fetchLeaderboard() {
+          const res = await fetch('/.netlify/functions/leaderboard');
+          if (!res.ok) return;
+          const data = await res.json();
+          const ol = document.getElementById('leaderboard-list');
+          ol.innerHTML = '';
+          data.forEach(item => {
+            const li = document.createElement('li');
+            li.textContent = `${item.dataset_name} (${item.stars} ⭐)`;
+            ol.appendChild(li);
+          });
+        }
+
+        // 2) Handle star button clicks (one-star-per-browser)
+        async function recordStar(name) {
           const keyStarred = 'starred_' + name;
           // already starred?
           if (localStorage.getItem(keyStarred)) return;
 
           // optimistic UI update
           localStorage.setItem(keyStarred, '1');
-          const span = document.getElementById('star-count-' + name);
-          if (span) {
+
+          // Find elements using data attributes
+          const spans = document.querySelectorAll(`span.star-count[data-dataset="${name}"]`);
+          const btns = document.querySelectorAll(`button.star-btn[data-dataset="${name}"]`);
+
+          spans.forEach(span => {
             let newCount = parseInt(span.textContent || '0', 10) + 1;
             span.textContent = newCount;
             localStorage.setItem('star-count-' + name, newCount);
-          }
+          });
 
-          const btn = document.getElementById('star-btn-' + name);
-          if (btn) {
+          btns.forEach(btn => {
             btn.disabled = true;
-          }
+          });
 
-          // persist to server
-          try {
-            await fetch('/.netlify/functions/star', {
-              method: 'POST',
-              headers: {'Content-Type':'application/json'},
-              body: JSON.stringify({ name })
-            });
-          } catch (e) {
-            console.error('Error recording star:', e);
-          }
+          // persist to server with EXACT name
+          await fetch('/.netlify/functions/star', {
+            method: 'POST',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({ name: name })
+          });
 
           // refresh sidebar
           fetchLeaderboard();
         }
 
-        // Fetch and render top-10 starred datasets in the sidebar
-        async function fetchLeaderboard() {
+        // 3) On page load: seed counts, disable starred buttons, populate sidebar, hook toggle
+        document.addEventListener('DOMContentLoaded', async () => {
+          // Seed popup counts from counts endpoint
           try {
-            const res = await fetch('/.netlify/functions/leaderboard');
-            if (!res.ok) return;
-            const data = await res.json();
-            const ol = document.getElementById('leaderboard-list');
-            if (ol) {
-              ol.innerHTML = '';
-              data.forEach(item => {
-                const li = document.createElement('li');
-                li.textContent = `${item.dataset_name} (${item.stars} ⭐)`;
-                ol.appendChild(li);
+            const resp = await fetch('/.netlify/functions/counts');
+            if (resp.ok) {
+              const counts = await resp.json();
+              Object.entries(counts).forEach(([name, n]) => {
+                // Find elements using data attributes
+                const spans = document.querySelectorAll(`span.star-count[data-dataset="${name}"]`);
+                const btns = document.querySelectorAll(`button.star-btn[data-dataset="${name}"]`);
+
+                spans.forEach(span => {
+                  span.textContent = n;
+                  localStorage.setItem('star-count-' + name, n);
+                });
+
+                if (localStorage.getItem('starred_' + name)) {
+                  btns.forEach(btn => {
+                    btn.disabled = true;
+                  });
+                }
               });
             }
           } catch (e) {
-            console.error('Error fetching leaderboard:', e);
+            console.error('Error seeding star counts:', e);
           }
-        }
-
-        // Initialize when DOM is ready
-        function initializeApp() {
-          // Seed popup counts from counts endpoint
-          fetch('/.netlify/functions/counts')
-            .then(resp => resp.json())
-            .then(counts => {
-              Object.entries(counts).forEach(([name, n]) => {
-                const span = document.getElementById('star-count-' + name);
-                const btn = document.getElementById('star-btn-' + name);
-                if (span) {
-                  span.textContent = n;
-                  localStorage.setItem('star-count-' + name, n);
-                }
-                if (btn && localStorage.getItem('starred_' + name)) {
-                  btn.disabled = true;
-                }
-              });
-            })
-            .catch(e => console.error('Error seeding star counts:', e));
 
           // Populate sidebar leaderboard
           fetchLeaderboard();
 
           // Hook up the stats-bar toggle button
           const sidebar = document.getElementById('leaderboard');
-          const toggleBtn = document.getElementById('toggle-leaderboard');
-
-          if (toggleBtn && sidebar) {
-            toggleBtn.addEventListener('click', function(e) {
-              e.preventDefault();
-              if (sidebar.style.display === 'none' || sidebar.style.display === '') {
-                sidebar.style.display = 'block';
-                toggleBtn.textContent = 'Hide Leaderboard';
-              } else {
-                sidebar.style.display = 'none';
-                toggleBtn.textContent = 'Show Leaderboard';
-              }
-            });
-          }
-        }
-
-        // Wait for DOM to be ready
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', initializeApp);
-        } else {
-          // DOM is already ready
-          initializeApp();
-        }
+          const btn     = document.getElementById('toggle-leaderboard');
+          btn.addEventListener('click', () => {
+            if (sidebar.style.display === 'none') {
+              sidebar.style.display = 'block';
+              btn.textContent = 'Hide Leaderboard';
+            } else {
+              sidebar.style.display = 'none';
+              btn.textContent = 'Show Leaderboard';
+            }
+          });
+        });
         </script>
         """
-        m.get_root().html.add_child(folium.Element(star_js))
 
         # Persistent footer (fixed at bottom)
         footer_html = """
