@@ -786,6 +786,7 @@ class WeedAIHandler:
         });
         </script>
         """
+        m.get_root().html.add_child(folium.Element(star_js))
 
         # Persistent footer (fixed at bottom)
         footer_html = """
