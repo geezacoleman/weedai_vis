@@ -353,25 +353,25 @@ class WeedAIHandler:
         Build the HTML for each marker popup,
         injecting a star button and count span that rely on LocalStorage.
         """
-        safe_name = dataset_name.replace(" ", "_")
+        display_name = dataset_name
         url = info['url']
         classes = info.get('classes', [])
         class_list = "".join(f"<li>{c['class_name']} ({c['type']})</li>" for c in classes)
 
         return f"""
         <div>
-          <strong>{dataset_name}</strong><br>
+          <strong>{display_name}</strong><br>
           <strong>URL:</strong>
             <a href="{url}" target="_blank">Dataset Link</a><br>
 
           <!-- star button & client-side counter -->
           <button
-            id="star-btn-{safe_name}"
-            onclick="recordStar('{safe_name}'); return false;"
+            id="star-btn-{display_name}"
+            onclick="recordStar('{display_name}'); return false;"
             style="border:none; background:transparent; cursor:pointer; font-size:1.2rem;"
             aria-label="Star this dataset"
           >⭐</button>
-          <span id="star-count-{safe_name}">0</span><br>
+          <span id="star-count-{display_name}">0</span><br>
 
           <strong>Classes:</strong>
           <ul>{class_list}</ul>
@@ -408,36 +408,14 @@ class WeedAIHandler:
         total_images = (self.df.drop_duplicates(subset='dataset_name')['total_images'].fillna(0).sum())
 
         stats_html = f"""
-        <div class="page-stats" style="
-            background:#f9f9f9;
-            padding:1rem 2rem;
-            margin-bottom:1rem;
-            border-radius:0.5rem;
-            box-shadow:0 1px 3px rgba(0,0,0,0.1);
-            font-size:2rem;
-            color:#333;
-            display:flex;
-            align-items:center;
-            gap:2rem;
-            flex-wrap:nowrap;
-            white-space:nowrap;
-        ">
+        <div class="page-stats" id="page-stats">
           <span><strong>Annotated Crop Species:</strong> {num_crops}</span>
           <span><strong>Annotated Weed Species:</strong> {num_weeds}</span>
           <span><strong>Total Objects:</strong> {num_objects}</span>
           <span><strong>Total Images:</strong> {total_images}</span>
 
           <!-- leaderboard toggle -->
-          <button id="toggle-leaderboard" style="
-              margin-left:auto;
-              padding:0.5rem 1rem;
-              font-size:1.2rem;
-              background:#2C3E50;
-              color:#fff;
-              border:none;
-              border-radius:0.3rem;
-              cursor:pointer;
-          ">
+          <button id="toggle-leaderboard" type="button">
             Show Leaderboard
           </button>
         </div>
@@ -447,14 +425,14 @@ class WeedAIHandler:
         <link
           rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-          integrity="sha512-pM7m3Nn9Qb+3n7WZ3+Y4Y5+z0E6kpVtI9ZB+XQGg7e5Tue+/pVjFYsUzHlBPUnZdvN0QO1VfM3shS8g6o5h6hw=="
+          integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
           crossorigin="anonymous"
           referrerpolicy="no-referrer"
         />
         """
         m.get_root().html.add_child(folium.Element(fa_css))
 
-        # Global CSS
+        # Global CSS with fixed mobile styles
         css = """
         <style>            
           /* Page header */
@@ -466,6 +444,8 @@ class WeedAIHandler:
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
           }
 
           .page-header h1 {
@@ -492,15 +472,31 @@ class WeedAIHandler:
             font-size: 2rem;
             color: #333;
             display: flex;
+            align-items: center;
             gap: 2rem;
-            flex-wrap: nowrap;      /* never wrap on desktop */
-            white-space: nowrap;    /* keep items on one line */
+            flex-wrap: wrap;      /* Allow wrapping on all screens */
+          }
+
+          /* Leaderboard toggle button */
+          #toggle-leaderboard {
+            margin-left: auto;
+            padding: 0.5rem 1rem;
+            font-size: 1.2rem;
+            background: #2C3E50;
+            color: #fff;
+            border: none;
+            border-radius: 0.3rem;
+            cursor: pointer;
+          }
+
+          #toggle-leaderboard:hover {
+            background: #1f2a38;
           }
 
           /* Legend card */
           .legend {
             position: fixed;
-            bottom: 6rem;           /* pushed up above footer */
+            bottom: 6rem;
             right: 1rem;
             background: #fff;
             padding: 1rem;
@@ -563,26 +559,70 @@ class WeedAIHandler:
             border-color: #1f2a38;
           }
 
-          /* Ensure click targets work */
-          #toggle-leaderboard,
+          /* Leaderboard sidebar */
           #leaderboard {
-            pointer-events: auto;
+            display: none;
+            position: fixed;
+            top: 160px;
+            right: 1rem;
+            background: #fff;
+            padding: 1rem;
+            border-radius: .5rem;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            width: 200px;
+            font-size: 1rem;
+            z-index: 9999;
           }
 
           /* Mobile responsiveness */
-          @media (max-width: 600px) {
-            /* allow stats to wrap on phones */
+          @media (max-width: 768px) {
+            .page-header {
+              padding: 1rem;
+            }
+
+            .page-header h1 {
+              font-size: 2rem;
+            }
+
+            .page-header p {
+              font-size: 1.5rem;
+            }
+
+            /* Stats should wrap nicely on mobile */
             .page-stats {
-              flex-wrap: wrap;
-              white-space: normal;
+              font-size: 1.2rem;
+              padding: 1rem;
               gap: 1rem;
             }
-            /* reposition leaderboard */
+
+            .page-stats span {
+              flex: 1 1 auto;
+              min-width: 150px;
+            }
+
+            #toggle-leaderboard {
+              flex: 1 1 100%;
+              margin-left: 0;
+              margin-top: 0.5rem;
+            }
+
+            /* Reposition leaderboard on mobile */
             #leaderboard {
-              display: block !important;
               width: 90% !important;
+              left: 5% !important;
               right: 5% !important;
-              top: calc(100px + 1rem) !important;
+              top: auto !important;
+              bottom: 100px !important;
+              max-height: 50vh;
+              overflow-y: auto;
+            }
+
+            .legend {
+              bottom: 3rem;
+              right: 0.5rem;
+              max-width: 180px;
+              font-size: 0.9rem;
+              padding: 0.75rem;
             }
           }
         </style>"""
@@ -638,42 +678,21 @@ class WeedAIHandler:
         """
         m.get_root().html.add_child(folium.Element(legend))
 
-        # 1) Collapsible sidebar leaderboard + toggle button
+        # Collapsible sidebar leaderboard
         leaderboard_html = """
-                <!-- Sidebar leaderboard -->
-                <div id="leaderboard" style="
-                    display: none;
-                    position:fixed; top:160px; right:1rem;
-                    background:#fff; padding:1rem; border-radius:.5rem;
-                    box-shadow:0 2px 6px rgba(0,0,0,0.15);
-                    width:200px; font-size:1rem; z-index:9999;
-                ">
-                  <h5 style="margin-top:0;">Most-Starred Datasets</h5>
-                  <ol id="leaderboard-list" style="padding-left:1.2em; margin:0;"></ol>
-                </div>
-                """
+        <!-- Sidebar leaderboard -->
+        <div id="leaderboard">
+          <h5 style="margin-top:0;">Most-Starred Datasets</h5>
+          <ol id="leaderboard-list" style="padding-left:1.2em; margin:0;"></ol>
+        </div>
+        """
         m.get_root().html.add_child(folium.Element(leaderboard_html))
 
-        # 2) JS for LocalStorage stars, seeding counts, fetching leaderboard, toggle
-        # 2) JS for LocalStorage stars, seeding counts, fetching leaderboard, toggle
+        # Fixed JS for stars and toggle functionality
         star_js = """
         <script>
-        // 1) Fetch and render top-10 starred datasets in the sidebar
-        async function fetchLeaderboard() {
-          const res = await fetch('/.netlify/functions/leaderboard');
-          if (!res.ok) return;
-          const data = await res.json();
-          const ol = document.getElementById('leaderboard-list');
-          ol.innerHTML = '';
-          data.forEach(item => {
-            const li = document.createElement('li');
-            li.textContent = `${item.dataset_name} (${item.stars} ⭐)`;
-            ol.appendChild(li);
-          });
-        }
-
-        // 2) Handle star button clicks (one-star-per-browser)
-        async function recordStar(name) {
+        // Global function definitions
+        window.recordStar = async function(name) {
           const keyStarred = 'starred_' + name;
           // already starred?
           if (localStorage.getItem(keyStarred)) return;
@@ -681,66 +700,105 @@ class WeedAIHandler:
           // optimistic UI update
           localStorage.setItem(keyStarred, '1');
           const span = document.getElementById('star-count-' + name);
-          let newCount = parseInt(span.textContent || '0', 10) + 1;
-          span.textContent = newCount;
-          localStorage.setItem('star-count-' + name, newCount);
-          document.getElementById('star-btn-' + name).disabled = true;
+          if (span) {
+            let newCount = parseInt(span.textContent || '0', 10) + 1;
+            span.textContent = newCount;
+            localStorage.setItem('star-count-' + name, newCount);
+          }
+
+          const btn = document.getElementById('star-btn-' + name);
+          if (btn) {
+            btn.disabled = true;
+          }
 
           // persist to server
-          await fetch('/.netlify/functions/star', {
-            method: 'POST',
-            headers: {'Content-Type':'application/json'},
-            body: JSON.stringify({ name })
-          });
+          try {
+            await fetch('/.netlify/functions/star', {
+              method: 'POST',
+              headers: {'Content-Type':'application/json'},
+              body: JSON.stringify({ name })
+            });
+          } catch (e) {
+            console.error('Error recording star:', e);
+          }
 
           // refresh sidebar
           fetchLeaderboard();
         }
 
-        // 3) On page load: seed counts, disable starred buttons, populate sidebar, hook toggle
-        document.addEventListener('DOMContentLoaded', async () => {
-          // Seed popup counts from counts endpoint
+        // Fetch and render top-10 starred datasets in the sidebar
+        async function fetchLeaderboard() {
           try {
-            const resp = await fetch('/.netlify/functions/counts');
-            if (resp.ok) {
-              const counts = await resp.json();
+            const res = await fetch('/.netlify/functions/leaderboard');
+            if (!res.ok) return;
+            const data = await res.json();
+            const ol = document.getElementById('leaderboard-list');
+            if (ol) {
+              ol.innerHTML = '';
+              data.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = `${item.dataset_name} (${item.stars} ⭐)`;
+                ol.appendChild(li);
+              });
+            }
+          } catch (e) {
+            console.error('Error fetching leaderboard:', e);
+          }
+        }
+
+        // Initialize when DOM is ready
+        function initializeApp() {
+          // Seed popup counts from counts endpoint
+          fetch('/.netlify/functions/counts')
+            .then(resp => resp.json())
+            .then(counts => {
               Object.entries(counts).forEach(([name, n]) => {
                 const span = document.getElementById('star-count-' + name);
-                const btn  = document.getElementById('star-btn-' + name);
+                const btn = document.getElementById('star-btn-' + name);
                 if (span) {
                   span.textContent = n;
                   localStorage.setItem('star-count-' + name, n);
                 }
-                if (localStorage.getItem('starred_' + name)) {
+                if (btn && localStorage.getItem('starred_' + name)) {
                   btn.disabled = true;
                 }
               });
-            }
-          } catch (e) {
-            console.error('Error seeding star counts:', e);
-          }
+            })
+            .catch(e => console.error('Error seeding star counts:', e));
 
           // Populate sidebar leaderboard
           fetchLeaderboard();
 
           // Hook up the stats-bar toggle button
           const sidebar = document.getElementById('leaderboard');
-          const btn     = document.getElementById('toggle-leaderboard');
-          btn.addEventListener('click', () => {
-            if (sidebar.style.display === 'none') {
-              sidebar.style.display = 'block';
-              btn.textContent = 'Hide Leaderboard';
-            } else {
-              sidebar.style.display = 'none';
-              btn.textContent = 'Show Leaderboard';
-            }
-          });
-        });
+          const toggleBtn = document.getElementById('toggle-leaderboard');
+
+          if (toggleBtn && sidebar) {
+            toggleBtn.addEventListener('click', function(e) {
+              e.preventDefault();
+              if (sidebar.style.display === 'none' || sidebar.style.display === '') {
+                sidebar.style.display = 'block';
+                toggleBtn.textContent = 'Hide Leaderboard';
+              } else {
+                sidebar.style.display = 'none';
+                toggleBtn.textContent = 'Show Leaderboard';
+              }
+            });
+          }
+        }
+
+        // Wait for DOM to be ready
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', initializeApp);
+        } else {
+          // DOM is already ready
+          initializeApp();
+        }
         </script>
         """
         m.get_root().html.add_child(folium.Element(star_js))
 
-        # 3) Persistent footer (fixed at bottom)
+        # Persistent footer (fixed at bottom)
         footer_html = """
         <footer style="
             position: fixed;
@@ -776,7 +834,7 @@ class WeedAIHandler:
             </div>
             <div style="
                 font-family: monospace;
-                font-size: 1.3  rem;
+                font-size: 1.3rem;
                 background: #ddd;
                 padding: 0.2rem 0.7rem;
                 border-radius: 0.25rem;
