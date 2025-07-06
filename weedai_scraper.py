@@ -455,111 +455,137 @@ class WeedAIHandler:
         m.get_root().html.add_child(folium.Element(fa_css))
 
         # Global CSS
-        css = """<style>            
-              /* Page header */
-              .page-header {
-                background: #fff;
-                padding: 1rem 2rem;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-                margin-bottom: 0.5rem;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-              }
-            
-              .page-header h1 {
-                margin: 0;
-                font-size: 2.7rem;
-                font-weight: 700;
-                color: #2C3E50;
-                letter-spacing: 1px;
-              }
-            
-              .page-header p {
-                margin: 0.25rem 0 0;
-                color: #555;
-                font-size: 2.2rem;
-              }
-            
-              /* Statistics panel */
-              .page-stats {
-                background: #f9f9f9;
-                padding: 1rem 2rem;
-                margin-bottom: 1rem;
-                border-radius: 0.5rem;
-                box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-                font-size: 2rem;
-                color: #333;
-                display: flex;
-                gap: 2rem;
-              }
-            
-              /* Legend card */
-              .legend {
-                position: fixed;
-                bottom: 5rem;
-                right: 1rem;
-                background: #fff;
-                padding: 1rem;
-                border-radius: 0.5rem;
-                box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-                font-size: 1rem;
-                line-height: 1.4;
-                max-width: 240px;
-                z-index: 9999;
-              }
-            
-              .legend h5 {
-                margin-top: 0;
-                margin-bottom: 0.5rem;
-                font-size: 1rem;
-                color: #2C3E50;
-              }
-            
-              .legend ul {
-                list-style: none;
-                padding: 0;
-                margin: 0 0 1rem 0;
-              }
-            
-              .legend li {
-                display: flex;
-                align-items: center;
-                margin-bottom: 0.5rem;
-              }
-            
-              /* Dot markers for classes */
-              .legend .dot {
-                display: inline-block;
-                width: 10px;
-                height: 10px;
-                border-radius: 50%;
-                margin-right: 0.5rem;
-              }
-            
-              /* Pie‐chart icon for proportions */
-              .pie-icon {
-                display: inline-block;
-                width: 10px;
-                height: 10px;
-                border-radius: 50%;
-                background: conic-gradient(
-                  #003f5c 0% 50%,
-                  #bc5090 0% 100%
-                );
-                margin-right: 0.5rem;
-              }
-            
-              /* Utility styles */
-              a.btn-primary {
-                background-color: #2C3E50;
-                border-color: #2C3E50;
-              }
-              a.btn-primary:hover {
-                background-color: #1f2a38;
-                border-color: #1f2a38;
-              }
-            </style>"""
+        css = """
+        <style>            
+          /* Page header */
+          .page-header {
+            background: #fff;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          }
+
+          .page-header h1 {
+            margin: 0;
+            font-size: 2.7rem;
+            font-weight: 700;
+            color: #2C3E50;
+            letter-spacing: 1px;
+          }
+
+          .page-header p {
+            margin: 0.25rem 0 0;
+            color: #555;
+            font-size: 2.2rem;
+          }
+
+          /* Statistics panel */
+          .page-stats {
+            background: #f9f9f9;
+            padding: 1rem 2rem;
+            margin-bottom: 1rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            font-size: 2rem;
+            color: #333;
+            display: flex;
+            gap: 2rem;
+            flex-wrap: nowrap;      /* never wrap on desktop */
+            white-space: nowrap;    /* keep items on one line */
+          }
+
+          /* Legend card */
+          .legend {
+            position: fixed;
+            bottom: 6rem;           /* pushed up above footer */
+            right: 1rem;
+            background: #fff;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            font-size: 1rem;
+            line-height: 1.4;
+            max-width: 240px;
+            z-index: 9999;
+          }
+
+          .legend h5 {
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+            color: #2C3E50;
+          }
+
+          .legend ul {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 1rem 0;
+          }
+
+          .legend li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+          }
+
+          /* Dot markers for classes */
+          .legend .dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+          }
+
+          /* Pie‐chart icon for proportions */
+          .pie-icon {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: conic-gradient(
+              #003f5c 0% 50%,
+              #bc5090 0% 100%
+            );
+            margin-right: 0.5rem;
+          }
+
+          /* Button override */
+          a.btn-primary {
+            background-color: #2C3E50;
+            border-color: #2C3E50;
+          }
+          a.btn-primary:hover {
+            background-color: #1f2a38;
+            border-color: #1f2a38;
+          }
+
+          /* Ensure click targets work */
+          #toggle-leaderboard,
+          #leaderboard {
+            pointer-events: auto;
+          }
+
+          /* Mobile responsiveness */
+          @media (max-width: 600px) {
+            /* allow stats to wrap on phones */
+            .page-stats {
+              flex-wrap: wrap;
+              white-space: normal;
+              gap: 1rem;
+            }
+            /* reposition leaderboard */
+            #leaderboard {
+              display: block !important;
+              width: 90% !important;
+              right: 5% !important;
+              top: calc(100px + 1rem) !important;
+            }
+          }
+        </style>"""
         m.get_root().html.add_child(folium.Element(css))
 
         header = f"""
@@ -629,75 +655,89 @@ class WeedAIHandler:
         m.get_root().html.add_child(folium.Element(leaderboard_html))
 
         # 2) JS for LocalStorage stars, seeding counts, fetching leaderboard, toggle
+        # 2) JS for LocalStorage stars, seeding counts, fetching leaderboard, toggle
         star_js = """
-                <script>
-                // Fetch and render top-10 starred datasets
-                async function fetchLeaderboard() {
-                  const res = await fetch('/.netlify/functions/leaderboard');
-                  if (!res.ok) return;
-                  const data = await res.json();
-                  const ol = document.getElementById('leaderboard-list');
-                  ol.innerHTML = '';
-                  data.forEach(item => {
-                    const li = document.createElement('li');
-                    li.textContent = `${item.dataset_name} (${item.stars} ⭐)`;
-                    ol.appendChild(li);
-                  });
+        <script>
+        // 1) Fetch and render top-10 starred datasets in the sidebar
+        async function fetchLeaderboard() {
+          const res = await fetch('/.netlify/functions/leaderboard');
+          if (!res.ok) return;
+          const data = await res.json();
+          const ol = document.getElementById('leaderboard-list');
+          ol.innerHTML = '';
+          data.forEach(item => {
+            const li = document.createElement('li');
+            li.textContent = `${item.dataset_name} (${item.stars} ⭐)`;
+            ol.appendChild(li);
+          });
+        }
+
+        // 2) Handle star button clicks (one-star-per-browser)
+        async function recordStar(name) {
+          const keyStarred = 'starred_' + name;
+          // already starred?
+          if (localStorage.getItem(keyStarred)) return;
+
+          // optimistic UI update
+          localStorage.setItem(keyStarred, '1');
+          const span = document.getElementById('star-count-' + name);
+          let newCount = parseInt(span.textContent || '0', 10) + 1;
+          span.textContent = newCount;
+          localStorage.setItem('star-count-' + name, newCount);
+          document.getElementById('star-btn-' + name).disabled = true;
+
+          // persist to server
+          await fetch('/.netlify/functions/star', {
+            method: 'POST',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({ name })
+          });
+
+          // refresh sidebar
+          fetchLeaderboard();
+        }
+
+        // 3) On page load: seed counts, disable starred buttons, populate sidebar, hook toggle
+        document.addEventListener('DOMContentLoaded', async () => {
+          // Seed popup counts from counts endpoint
+          try {
+            const resp = await fetch('/.netlify/functions/counts');
+            if (resp.ok) {
+              const counts = await resp.json();
+              Object.entries(counts).forEach(([name, n]) => {
+                const span = document.getElementById('star-count-' + name);
+                const btn  = document.getElementById('star-btn-' + name);
+                if (span) {
+                  span.textContent = n;
+                  localStorage.setItem('star-count-' + name, n);
                 }
-
-                // Called on star button click
-                async function recordStar(name) {
-                  const key = 'starred_' + name;
-                  if (localStorage.getItem(key)) return;  // already starred
-                  // optimistic UI update
-                  localStorage.setItem(key, '1');
-                  const span = document.getElementById('star-count-' + name);
-                  span.textContent = parseInt(span.textContent || '0') + 1;
-                  document.getElementById('star-btn-' + name).disabled = true;
-
-                  // persist to server
-                  await fetch('/.netlify/functions/star', {
-                    method:'POST',
-                    headers:{'Content-Type':'application/json'},
-                    body: JSON.stringify({ name })
-                  });
-
-                  // refresh sidebar
-                  fetchLeaderboard();
+                if (localStorage.getItem('starred_' + name)) {
+                  btn.disabled = true;
                 }
+              });
+            }
+          } catch (e) {
+            console.error('Error seeding star counts:', e);
+          }
 
-                document.addEventListener('DOMContentLoaded', async () => {
-                  // 1) Seed popup counts from counts endpoint
-                  const resp = await fetch('/.netlify/functions/counts');
-                  if (resp.ok) {
-                    const counts = await resp.json();
-                    Object.entries(counts).forEach(([name,n]) => {
-                      const span = document.getElementById('star-count-'+name);
-                      if (span) span.textContent = n;
-                      if (localStorage.getItem('starred_'+name)) {
-                        document.getElementById('star-btn-'+name).disabled = true;
-                      }
-                    });
-                  }
+          // Populate sidebar leaderboard
+          fetchLeaderboard();
 
-                  // 2) Populate sidebar leaderboard
-                  fetchLeaderboard();
-
-                  // HOOK INTO THE STATS-BAR BUTTON
-                  const sidebar = document.getElementById('leaderboard');
-                  const btn     = document.getElementById('toggle-leaderboard');
-                  btn.addEventListener('click', () => {
-                    if (sidebar.style.display === 'none') {
-                      sidebar.style.display = 'block';
-                      btn.textContent = 'Hide Leaderboard';
-                    } else {
-                      sidebar.style.display = 'none';
-                      btn.textContent = 'Show Leaderboard';
-                    }
-                  });
-                });
-                </script>
-                """
+          // Hook up the stats-bar toggle button
+          const sidebar = document.getElementById('leaderboard');
+          const btn     = document.getElementById('toggle-leaderboard');
+          btn.addEventListener('click', () => {
+            if (sidebar.style.display === 'none') {
+              sidebar.style.display = 'block';
+              btn.textContent = 'Hide Leaderboard';
+            } else {
+              sidebar.style.display = 'none';
+              btn.textContent = 'Show Leaderboard';
+            }
+          });
+        });
+        </script>
+        """
         m.get_root().html.add_child(folium.Element(star_js))
 
         # 3) Persistent footer (fixed at bottom)
