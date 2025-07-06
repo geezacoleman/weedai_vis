@@ -692,6 +692,9 @@ class WeedAIHandler:
 
         star_js = """
         <script>
+        // Store counts globally
+        let globalStarCounts = {};
+
         // 1) Fetch and render top-10 starred datasets in the sidebar
         async function fetchLeaderboard() {
           const res = await fetch('/.netlify/functions/leaderboard');
@@ -706,6 +709,24 @@ class WeedAIHandler:
           });
         }
 
+        // Update star counts in any visible popups
+        function updateVisibleStarCounts() {
+          Object.entries(globalStarCounts).forEach(([name, count]) => {
+            const spans = document.querySelectorAll(`span.star-count[data-dataset="${name}"]`);
+            const btns = document.querySelectorAll(`button.star-btn[data-dataset="${name}"]`);
+
+            spans.forEach(span => {
+              span.textContent = count;
+            });
+
+            if (localStorage.getItem('starred_' + name)) {
+              btns.forEach(btn => {
+                btn.disabled = true;
+              });
+            }
+          });
+        }
+
         // 2) Handle star button clicks (one-star-per-browser)
         async function recordStar(name) {
           const keyStarred = 'starred_' + name;
@@ -715,19 +736,11 @@ class WeedAIHandler:
           // optimistic UI update
           localStorage.setItem(keyStarred, '1');
 
-          // Find elements using data attributes
-          const spans = document.querySelectorAll(`span.star-count[data-dataset="${name}"]`);
-          const btns = document.querySelectorAll(`button.star-btn[data-dataset="${name}"]`);
+          // Update global count
+          globalStarCounts[name] = (globalStarCounts[name] || 0) + 1;
 
-          spans.forEach(span => {
-            let newCount = parseInt(span.textContent || '0', 10) + 1;
-            span.textContent = newCount;
-            localStorage.setItem('star-count-' + name, newCount);
-          });
-
-          btns.forEach(btn => {
-            btn.disabled = true;
-          });
+          // Update any visible popups
+          updateVisibleStarCounts();
 
           // persist to server with EXACT name
           await fetch('/.netlify/functions/star', {
@@ -740,32 +753,16 @@ class WeedAIHandler:
           fetchLeaderboard();
         }
 
-        // 3) On page load: seed counts, disable starred buttons, populate sidebar, hook toggle
+        // 3) On page load: fetch counts and setup
         document.addEventListener('DOMContentLoaded', async () => {
-          // Seed popup counts from counts endpoint
+          // Fetch and store counts globally
           try {
             const resp = await fetch('/.netlify/functions/counts');
             if (resp.ok) {
-              const counts = await resp.json();
-              Object.entries(counts).forEach(([name, n]) => {
-                // Find elements using data attributes
-                const spans = document.querySelectorAll(`span.star-count[data-dataset="${name}"]`);
-                const btns = document.querySelectorAll(`button.star-btn[data-dataset="${name}"]`);
-
-                spans.forEach(span => {
-                  span.textContent = n;
-                  localStorage.setItem('star-count-' + name, n);
-                });
-
-                if (localStorage.getItem('starred_' + name)) {
-                  btns.forEach(btn => {
-                    btn.disabled = true;
-                  });
-                }
-              });
+              globalStarCounts = await resp.json();
             }
           } catch (e) {
-            console.error('Error seeding star counts:', e);
+            console.error('Error fetching star counts:', e);
           }
 
           // Populate sidebar leaderboard
@@ -773,17 +770,33 @@ class WeedAIHandler:
 
           // Hook up the stats-bar toggle button
           const sidebar = document.getElementById('leaderboard');
-          const btn     = document.getElementById('toggle-leaderboard');
-          btn.addEventListener('click', () => {
-            if (sidebar.style.display === 'none') {
-              sidebar.style.display = 'block';
-              btn.textContent = 'Hide Leaderboard';
-            } else {
-              sidebar.style.display = 'none';
-              btn.textContent = 'Show Leaderboard';
-            }
+          const btn = document.getElementById('toggle-leaderboard');
+          if (btn && sidebar) {
+            btn.addEventListener('click', () => {
+              if (sidebar.style.display === 'none' || sidebar.style.display === '') {
+                sidebar.style.display = 'block';
+                btn.textContent = 'Hide Leaderboard';
+              } else {
+                sidebar.style.display = 'none';
+                btn.textContent = 'Show Leaderboard';
+              }
+            });
+          }
+
+          // Watch for popup opens using MutationObserver
+          const observer = new MutationObserver(() => {
+            updateVisibleStarCounts();
+          });
+
+          // Start observing the document for popup changes
+          observer.observe(document.body, {
+            childList: true,
+            subtree: true
           });
         });
+
+        // Make the window.recordStar available globally
+        window.recordStar = recordStar;
         </script>
         """
         m.get_root().html.add_child(folium.Element(star_js))
