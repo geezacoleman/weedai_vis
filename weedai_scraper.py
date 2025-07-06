@@ -348,72 +348,35 @@ class WeedAIHandler:
         m.save(self.output_html)
         print(f"Map saved as '{self.output_html}'")
 
-    def _create_popup_content(self, dataset_name: str, info: Dict) -> str:
+    def _create_popup_content(self, dataset_name: str, info: Dict[str, Any]) -> str:
         """
-        Create HTML content for dataset popups
-
-        Args:
-            dataset_name: Name of the dataset
-            info: Dataset information dictionary
-
-        Returns:
-            HTML string for popup content
+        Build the HTML for each marker popup,
+        injecting a star button and count span that rely on LocalStorage.
         """
-        popup_content = f"""
-        <div style="min-width:300px; max-width:500px;">
-        <h3>{dataset_name}</h3>
-        <strong>Total Images:</strong> {info['total_images']}<br>
-        <strong>Bounding Boxes:</strong> {info['n_boxes']}<br>
-        <strong>URL:</strong> <a href="{info['url']}" target="_blank">Dataset Link</a><br>
-        <!-- star button & count -->
-        <button
-          id="star-btn-{dataset_name}"
-          onclick="recordStar('{dataset_name}'); return false;"
-          style="border:none; background:transparent; cursor:pointer;"
-          aria-label="Star this dataset"
-        >⭐</button>
-        <span id="star-count-{dataset_name}">0</span><br>
-        <br>
-        <strong>Class Distribution:</strong><br>
-        <div style="max-height:200px; overflow-y:auto;">
-        <table style="width:100%; border-collapse:collapse;">
-        <tr style="background-color:#f2f2f2;">
-          <th style="padding:5px; text-align:left;">Class</th>
-          <th style="padding:5px; text-align:left;">Type</th>
-          <th style="padding:5px; text-align:right;">Images</th>
-          <th style="padding:5px; text-align:right;">Percentage</th>
-        </tr>
-        """
+        safe_name = dataset_name.replace(" ", "_")
+        url = info['url']
+        classes = info.get('classes', [])
+        class_list = "".join(f"<li>{c['class_name']} ({c['type']})</li>" for c in classes)
 
-        class_total = sum(c['n_class_images'] for c in info['classes']) if info['classes'] else 0
-        sorted_classes = sorted(info['classes'], key=lambda x: x['n_class_images'], reverse=True) if info[
-            'classes'] else []
+        return f"""
+        <div>
+          <strong>{dataset_name}</strong><br>
+          <strong>URL:</strong>
+            <a href="{url}" target="_blank">Dataset Link</a><br>
 
-        for c in sorted_classes:
-            percentage = (c['n_class_images'] / class_total * 100) if class_total > 0 else 0
-            class_color = self.type_colors.get(c['type'], self.type_colors['unknown'])
-            popup_content += f"""
-            <tr>
-              <td style="padding:5px; border-bottom:1px solid #ddd;">{c['class_name']}</td>
-              <td style="padding:5px; border-bottom:1px solid #ddd;">
-                <span style="display:inline-block; width:12px; height:12px; background-color:{class_color}; border-radius:50%; margin-right:5px;"></span>
-                {c['type'] if c['type'] else 'unknown'}
-              </td>
-              <td style="padding:5px; border-bottom:1px solid #ddd; text-align:right;">{c['n_class_images']}</td>
-              <td style="padding:5px; border-bottom:1px solid #ddd; text-align:right;">{percentage:.1f}%</td>
-            </tr>
-            """
+          <!-- star button & client-side counter -->
+          <button
+            id="star-btn-{safe_name}"
+            onclick="recordStar('{safe_name}'); return false;"
+            style="border:none; background:transparent; cursor:pointer; font-size:1.2rem;"
+            aria-label="Star this dataset"
+          >⭐</button>
+          <span id="star-count-{safe_name}">0</span><br>
 
-        if not info['classes']:
-            popup_content += '<tr><td colspan="4" style="padding:5px;">No class information available</td></tr>'
-
-        popup_content += """
-        </table>
-        </div>
+          <strong>Classes:</strong>
+          <ul>{class_list}</ul>
         </div>
         """
-
-        return popup_content
 
     def _get_default_color(self, info: Dict) -> str:
         """
@@ -439,33 +402,60 @@ class WeedAIHandler:
                 'unknown']
 
     def _add_title_and_legend(self, m: folium.Map) -> None:
-        """
-        Inject a Bootstrap navbar, a clean page header (with upload button),
-        modern legend, and dataset statistics into the map HTML.
-        """
-        # Compute statistics
         num_crops = self.df.loc[self.df['type'] == 'crop', 'class'].nunique()
         num_weeds = self.df.loc[self.df['type'] == 'weed', 'class'].nunique()
         num_objects = self.df['n_boxes'].fillna(0).sum()
         total_images = (self.df.drop_duplicates(subset='dataset_name')['total_images'].fillna(0).sum())
 
-        # Stats HTML
         stats_html = f"""
-        <div class="page-stats" style="background:#f9f9f9; padding:1rem 2rem; margin-bottom:1rem; border-radius:0.5rem; box-shadow:0 1px 3px rgba(0,0,0,0.1);">
-          <strong>Annotated Crop Species:</strong> {num_crops} &nbsp;&nbsp;
-          <strong>Annotated Weed Species:</strong> {num_weeds} &nbsp;&nbsp;
-          <strong>Total Objects:</strong> {num_objects} &nbsp;&nbsp;
-          <strong>Total Images:</strong> {total_images}
+        <div class="page-stats" style="
+            background:#f9f9f9;
+            padding:1rem 2rem;
+            margin-bottom:1rem;
+            border-radius:0.5rem;
+            box-shadow:0 1px 3px rgba(0,0,0,0.1);
+            font-size:2rem;
+            color:#333;
+            display:flex;
+            align-items:center;
+            gap:2rem;
+            flex-wrap:nowrap;
+            white-space:nowrap;
+        ">
+          <span><strong>Annotated Crop Species:</strong> {num_crops}</span>
+          <span><strong>Annotated Weed Species:</strong> {num_weeds}</span>
+          <span><strong>Total Objects:</strong> {num_objects}</span>
+          <span><strong>Total Images:</strong> {total_images}</span>
+
+          <!-- leaderboard toggle -->
+          <button id="toggle-leaderboard" style="
+              margin-left:auto;
+              padding:0.5rem 1rem;
+              font-size:1.2rem;
+              background:#2C3E50;
+              color:#fff;
+              border:none;
+              border-radius:0.3rem;
+              cursor:pointer;
+          ">
+            Show Leaderboard
+          </button>
         </div>
         """
 
+        fa_css = """
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+          integrity="sha512-pM7m3Nn9Qb+3n7WZ3+Y4Y5+z0E6kpVtI9ZB+XQGg7e5Tue+/pVjFYsUzHlBPUnZdvN0QO1VfM3shS8g6o5h6hw=="
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer"
+        />
+        """
+        m.get_root().html.add_child(folium.Element(fa_css))
+
         # Global CSS
-        css = """<style>
-              /* push content below fixed navbar */
-              body {
-                padding-top: 70px;
-              }
-            
+        css = """<style>            
               /* Page header */
               .page-header {
                 background: #fff;
@@ -479,7 +469,7 @@ class WeedAIHandler:
             
               .page-header h1 {
                 margin: 0;
-                font-size: 2rem;
+                font-size: 2.7rem;
                 font-weight: 700;
                 color: #2C3E50;
                 letter-spacing: 1px;
@@ -488,7 +478,7 @@ class WeedAIHandler:
               .page-header p {
                 margin: 0.25rem 0 0;
                 color: #555;
-                font-size: 1rem;
+                font-size: 2.2rem;
               }
             
               /* Statistics panel */
@@ -498,7 +488,7 @@ class WeedAIHandler:
                 margin-bottom: 1rem;
                 border-radius: 0.5rem;
                 box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-                font-size: 1rem;
+                font-size: 2rem;
                 color: #333;
                 display: flex;
                 gap: 2rem;
@@ -507,13 +497,13 @@ class WeedAIHandler:
               /* Legend card */
               .legend {
                 position: fixed;
-                bottom: 1rem;
+                bottom: 5rem;
                 right: 1rem;
                 background: #fff;
                 padding: 1rem;
                 border-radius: 0.5rem;
                 box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-                font-size: 0.85rem;
+                font-size: 1rem;
                 line-height: 1.4;
                 max-width: 240px;
                 z-index: 9999;
@@ -572,47 +562,28 @@ class WeedAIHandler:
             </style>"""
         m.get_root().html.add_child(folium.Element(css))
 
-        # Navbar + header + stats
-        navbar_and_header = f"""
-        <!-- Bootstrap navbar -->
-        <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top shadow-sm">
-          <div class="container-fluid">
-            <a class="navbar-brand" href="https://weed-ai.sydney.edu.au">Visit WeedAI</a>
-            <button class="navbar-toggler" type="button"
-                    data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false"
-                    aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-              <ul class="navbar-nav">
-                <li class="nav-item">
-                  <a class="nav-link" href="https://weed-ai.sydney.edu.au">Home</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="https://weed-ai.sydney.edu.au/datasets" target="_blank">
-                    Datasets
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </nav>
-
+        header = f"""
         <!-- Page header -->
         <header class="page-header">
           <div>
-            <h1>WeedAI Dataset Visualization</h1>
+            <h1>WeedAI Dataset Map</h1>
             <p>Location of all datasets currently uploaded to WeedAI.</p>
           </div>
-          <a href="https://weed-ai.sydney.edu.au/upload" target="_blank"
-             class="btn btn-primary">
+          <a
+            href="https://weed-ai.sydney.edu.au/upload"
+            target="_blank"
+            class="btn btn-primary"
+            style="
+              padding: 0.5rem 1rem;
+              font-size: 1.2rem;
+            "
+          >
             Upload Your Data
           </a>
         </header>
         {stats_html}
         """
-        m.get_root().html.add_child(folium.Element(navbar_and_header))
+        m.get_root().html.add_child(folium.Element(header))
 
         legend = """
         <div class="legend">
@@ -641,70 +612,142 @@ class WeedAIHandler:
         """
         m.get_root().html.add_child(folium.Element(legend))
 
-        # 1) Floating leaderboard container
+        # 1) Collapsible sidebar leaderboard + toggle button
         leaderboard_html = """
+                <!-- Sidebar leaderboard -->
                 <div id="leaderboard" style="
-                    position: fixed; top: 80px; right: 1rem;
-                    background: #fff; padding: 1rem; border-radius: .5rem;
-                    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-                    max-width: 200px; font-size: 0.9rem; z-index: 9999;
+                    display: none;
+                    position:fixed; top:160px; right:1rem;
+                    background:#fff; padding:1rem; border-radius:.5rem;
+                    box-shadow:0 2px 6px rgba(0,0,0,0.15);
+                    width:200px; font-size:1rem; z-index:9999;
                 ">
-                  <h5>Most-Starred Datasets</h5>
+                  <h5 style="margin-top:0;">Most-Starred Datasets</h5>
                   <ol id="leaderboard-list" style="padding-left:1.2em; margin:0;"></ol>
                 </div>
                 """
         m.get_root().html.add_child(folium.Element(leaderboard_html))
 
-        # 2) JS for recordStar() and fetchLeaderboard()
+        # 2) JS for LocalStorage stars, seeding counts, fetching leaderboard, toggle
         star_js = """
                 <script>
-                // Fetch top-10 and render the floating leaderboard
+                // Fetch and render top-10 starred datasets
                 async function fetchLeaderboard() {
-                  let res = await fetch('/.netlify/functions/leaderboard');
+                  const res = await fetch('/.netlify/functions/leaderboard');
                   if (!res.ok) return;
-                  let data = await res.json();
-                  let ol = document.getElementById('leaderboard-list');
+                  const data = await res.json();
+                  const ol = document.getElementById('leaderboard-list');
                   ol.innerHTML = '';
                   data.forEach(item => {
-                    let li = document.createElement('li');
+                    const li = document.createElement('li');
                     li.textContent = `${item.dataset_name} (${item.stars} ⭐)`;
                     ol.appendChild(li);
                   });
                 }
 
-                // Called when user clicks the star button
+                // Called on star button click
                 async function recordStar(name) {
-                  const btn = document.getElementById('star-btn-'+name);
-                  if (btn.disabled) return;
-                  btn.disabled = true;
-                  // POST to your Netlify function
+                  const key = 'starred_' + name;
+                  if (localStorage.getItem(key)) return;  // already starred
+                  // optimistic UI update
+                  localStorage.setItem(key, '1');
+                  const span = document.getElementById('star-count-' + name);
+                  span.textContent = parseInt(span.textContent || '0') + 1;
+                  document.getElementById('star-btn-' + name).disabled = true;
+
+                  // persist to server
                   await fetch('/.netlify/functions/star', {
-                    method: 'POST',
-                    headers: {'Content-Type':'application/json'},
+                    method:'POST',
+                    headers:{'Content-Type':'application/json'},
                     body: JSON.stringify({ name })
                   });
-                  // bump the local counter
-                  let span = document.getElementById('star-count-'+name);
-                  span.textContent = parseInt(span.textContent||'0') + 1;
-                  // refresh leaderboard
+
+                  // refresh sidebar
                   fetchLeaderboard();
                 }
 
-                // On page load, populate leaderboard and disable any already-starred buttons
-                window.addEventListener('DOMContentLoaded', () => {
+                document.addEventListener('DOMContentLoaded', async () => {
+                  // 1) Seed popup counts from counts endpoint
+                  const resp = await fetch('/.netlify/functions/counts');
+                  if (resp.ok) {
+                    const counts = await resp.json();
+                    Object.entries(counts).forEach(([name,n]) => {
+                      const span = document.getElementById('star-count-'+name);
+                      if (span) span.textContent = n;
+                      if (localStorage.getItem('starred_'+name)) {
+                        document.getElementById('star-btn-'+name).disabled = true;
+                      }
+                    });
+                  }
+
+                  // 2) Populate sidebar leaderboard
                   fetchLeaderboard();
-                  document.querySelectorAll('[id^="star-btn-"]').forEach(btn => {
-                    let name = btn.id.replace('star-btn-','');
-                    if (localStorage.getItem('starred_'+name)) {
-                      btn.disabled = true;
-                      document.getElementById('star-count-'+name).textContent = 
-                        localStorage.getItem('star-count-'+name) || '0';
+
+                  // HOOK INTO THE STATS-BAR BUTTON
+                  const sidebar = document.getElementById('leaderboard');
+                  const btn     = document.getElementById('toggle-leaderboard');
+                  btn.addEventListener('click', () => {
+                    if (sidebar.style.display === 'none') {
+                      sidebar.style.display = 'block';
+                      btn.textContent = 'Hide Leaderboard';
+                    } else {
+                      sidebar.style.display = 'none';
+                      btn.textContent = 'Show Leaderboard';
                     }
                   });
                 });
                 </script>
                 """
         m.get_root().html.add_child(folium.Element(star_js))
+
+        # 3) Persistent footer (fixed at bottom)
+        footer_html = """
+        <footer style="
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            background: #f1f1f1;
+            box-shadow: 0 -1px 4px rgba(0,0,0,0.1);
+            font-family: sans-serif;
+            z-index: 10000;
+        ">
+          <!-- Left: author -->
+          <div style="font-size: 1.3rem; color: #333;">
+            Built by Guy Coleman
+          </div>
+
+          <!-- Right: social icons + version -->
+          <div style="display: flex; align-items: center; gap: 1rem;">
+            <div style="display: flex; gap: 0.75rem; font-size: 1.3rem;">
+              <a href="https://github.com/geezacoleman/weedai_vis" target="_blank" aria-label="GitHub" style="color: inherit;">
+                <i class="fab fa-github"></i>
+              </a>
+              <a href="https://www.youtube.com/channel/UCQxrZOfuLxlNM1i-gAueoLw" target="_blank" aria-label="YouTube" style="color: inherit;">
+                <i class="fab fa-youtube"></i>
+              </a>
+              <a href="https://www.linkedin.com/in/guy-coleman/" target="_blank" aria-label="LinkedIn" style="color: inherit;">
+                <i class="fab fa-linkedin"></i>
+              </a>
+            </div>
+            <div style="
+                font-family: monospace;
+                font-size: 1.3  rem;
+                background: #ddd;
+                padding: 0.2rem 0.7rem;
+                border-radius: 0.25rem;
+                color: #555;
+              ">
+              V0.1.0
+            </div>
+          </div>
+        </footer>
+        """
+        m.get_root().html.add_child(folium.Element(footer_html))
 
     def run_scrape_and_visualize(self) -> None:
         """

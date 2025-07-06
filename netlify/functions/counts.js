@@ -5,12 +5,12 @@ export async function handler() {
   const rows = await sql`
     SELECT dataset_name, stars
       FROM dataset_stars
-     ORDER BY stars DESC
-     LIMIT 10
   `
+  const result = {}
+  rows.forEach(r => { result[r.dataset_name] = r.stars })
   return {
     statusCode: 200,
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(rows)
+    body: JSON.stringify(result)
   }
 }
