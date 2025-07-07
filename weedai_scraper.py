@@ -431,6 +431,7 @@ class WeedAIHandler:
         </div>
         """
 
+        # Link to external CSS files
         css_links = """
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
               integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
@@ -441,20 +442,26 @@ class WeedAIHandler:
         """
         m.get_root().html.add_child(folium.Element(css_links))
 
-        header = f"""
+        header = """
         <!-- Page header -->
         <header class="page-header">
-          <div>
-            <h1>WeedAI Dataset Map</h1>
-            <p>Browse datasets on WeedAI.</p>
+          <div class="header-left">
+            <div class="logo-section">
+              <h1 onclick="window.location.href='/'">WeedAI Dataset Map</h1>
+              <p>Explore agricultural weed datasets worldwide</p>
+            </div>
           </div>
-          <a href="https://weed-ai.sydney.edu.au/upload" target="_blank" class="btn btn-primary">
-            Upload Your Data
-          </a>
+          <nav class="nav-links">
+            <a href="/" class="active">Map</a>
+            <a href="/datasets.html">Datasets</a>
+            <a href="/about.html">About</a>
+            <a href="/how-to-upload.html">How to Upload</a>
+            <a href="https://weed-ai.sydney.edu.au/upload" target="_blank" class="btn-upload">Upload</a>
+          </nav>
         </header>
-        {stats_html}
         """
         m.get_root().html.add_child(folium.Element(header))
+        m.get_root().html.add_child(folium.Element(stats_html))
 
         legend = """
         <div class="legend">
@@ -493,9 +500,11 @@ class WeedAIHandler:
         """
         m.get_root().html.add_child(folium.Element(leaderboard_html))
 
-        weedai_js = '<script src="/static/js/weedai.js"></script>'
-        m.get_root().html.add_child(folium.Element(weedai_js))
+        # Link to external JavaScript
+        js_link = '<script src="/static/js/weedai.js"></script>'
+        m.get_root().html.add_child(folium.Element(js_link))
 
+        # Persistent footer
         footer_html = """
         <footer>
           <div class="author">Built by Guy Coleman</div>

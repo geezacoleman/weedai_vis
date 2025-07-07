@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Datasets - WeedAI Dataset Explorer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="/static/css/mobile.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8f9fa;
+        }
+
+        .datasets-container {
+            margin-top: 2rem;
+        }
+
+        .table-wrapper {
+            background: white;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .star-cell {
+            text-align: center;
+            font-size: 1.2rem;
+        }
+
+        .dataset-type {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .dataset-type.detection {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .dataset-type.classification {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+
+        .dataset-type.mixed {
+            background: #fff3e0;
+            color: #f57c00;
+        }
+
+        .dataTables_wrapper {
+            padding: 0;
+        }
+
+        table.dataTable thead th {
+            border-bottom: 2px solid #dee2e6;
+            background: #f8f9fa;
+            font-weight: 600;
+        }
+
+        .page-title {
+            text-align: center;
+            margin: 2rem 0;
+            color: #2C3E50;
+        }
+
+        .page-title h2 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-title p {
+            color: #666;
+            font-size: 1.2rem;
+        }
+
+        /* Expandable row styles */
+        tr.parent-row {
+            cursor: pointer;
+        }
+
+        tr.parent-row:hover {
+            background: #f5f5f5;
+        }
+
+        tr.parent-row td:first-child::before {
+            content: '▶';
+            display: inline-block;
+            margin-right: 0.5rem;
+            transition: transform 0.3s;
+            color: #666;
+        }
+
+        tr.parent-row.expanded td:first-child::before {
+            transform: rotate(90deg);
+        }
+
+        tr.child-row {
+            display: none;
+            background: #fafafa;
+        }
+
+        tr.child-row.show {
+            display: table-row;
+        }
+
+        .child-content {
+            padding-left: 2rem;
+        }
+
+        .species-detail {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .species-detail:last-child {
+            border-bottom: none;
+        }
+
+        .species-name {
+            font-style: italic;
+            color: #2c3e50;
+        }
+
+        .species-type {
+            display: inline-block;
+            padding: 0.15rem 0.4rem;
+            border-radius: 0.2rem;
+            font-size: 0.75rem;
+            margin-left: 0.5rem;
+        }
+
+        .species-type.weed {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .species-type.crop {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .species-stats {
+            display: flex;
+            gap: 2rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .location-link {
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        .location-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="page-header">
+        <div class="header-left">
+            <div class="logo-section">
+                <h1 onclick="window.location.href='/'">WeedAI Dataset Map</h1>
+                <p>Explore agricultural weed datasets worldwide</p>
+            </div>
+        </div>
+        <nav class="nav-links">
+            <a href="/">Map</a>
+            <a href="/datasets.html" class="active">Datasets</a>
+            <a href="/about.html">About</a>
+            <a href="/how-to-upload.html">How to Upload</a>
+            <a href="https://weed-ai.sydney.edu.au/upload" target="_blank" class="btn-upload">Upload</a>
+        </nav>
+    </header>
+
+    <!-- Page Content -->
+    <div class="page-container">
+        <div class="page-title">
+            <h2>All Datasets</h2>
+            <p>Browse and search through all available WeedAI datasets</p>
+        </div>
+
+        <div class="datasets-container">
+            <div class="table-wrapper">
+                <table id="datasetsTable" class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Dataset Name</th>
+                            <th>Type</th>
+                            <th>Images</th>
+                            <th>Total Objects</th>
+                            <th>Species Count</th>
+                            <th>Location</th>
+                            <th>Stars</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <!-- Data will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="author">Built by Guy Coleman</div>
+        <div class="social-links">
+            <div class="social-icons">
+                <a href="https://github.com/geezacoleman/weedai_vis" target="_blank" aria-label="GitHub">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="https://www.youtube.com/channel/UCQxrZOfuLxlNM1i-gAueoLw" target="_blank" aria-label="YouTube">
+                    <i class="fab fa-youtube"></i>
+                </a>
+                <a href="https://www.linkedin.com/in/guy-coleman/" target="_blank" aria-label="LinkedIn">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+            </div>
+            <div class="version">V0.1.0</div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+    <script>
+        // Parse CSV data
+        function parseCSV(text) {
+            const lines = text.split('\n');
+            const headers = lines[0].split(',');
+            const data = [];
+
+            for (let i = 1; i < lines.length; i++) {
+                if (!lines[i].trim()) continue;
+                const values = lines[i].split(',');
+                const row = {};
+                headers.forEach((header, index) => {
+                    row[header] = values[index];
+                });
+                data.push(row);
+            }
+            return data;
+        }
+
+        // Load dataset data
+        async function loadDatasets() {
+            try {
+                // Fetch CSV data
+                const response = await fetch('/weedai_data.csv');
+                const csvText = await response.text();
+                const rows = parseCSV(csvText);
+
+                // Group by dataset
+                const datasets = {};
+                rows.forEach(row => {
+                    const name = row.dataset_name;
+                    if (!datasets[name]) {
+                        datasets[name] = {
+                            name: name,
+                            url: row.url,
+                            total_images: parseInt(row.total_images) || 0,
+                            latitude: parseFloat(row.latitude) || 0,
+                            longitude: parseFloat(row.longitude) || 0,
+                            classes: [],
+                            total_objects: 0,
+                            has_detection: false,
+                            has_classification: false
+                        };
+                    }
+
+                    // Add class info
+                    if (row.class && row.class !== 'none') {
+                        const n_boxes = parseInt(row.n_boxes) || 0;
+                        const n_class_images = parseInt(row.n_class_images) || 0;
+
+                        datasets[name].classes.push({
+                            type: row.type || 'unknown',
+                            name: row.class,
+                            subcat: row.class_sub_cat || '',
+                            n_boxes: n_boxes,
+                            n_class_images: n_class_images
+                        });
+
+                        datasets[name].total_objects += n_boxes;
+
+                        // Determine dataset type
+                        if (n_boxes > 0) datasets[name].has_detection = true;
+                        if (n_boxes === 0 && n_class_images > 0) datasets[name].has_classification = true;
+                    }
+                });
+
+                // Get star counts
+                const starResponse = await fetch('/.netlify/functions/counts');
+                const starCounts = await starResponse.json();
+
+                // Build table
+                const tableBody = document.getElementById('tableBody');
+                let rowId = 0;
+
+                Object.values(datasets).forEach(dataset => {
+                    const parentId = `row-${rowId++}`;
+
+                    // Determine dataset type
+                    let datasetType = 'classification';
+                    let typeLabel = 'Classification';
+                    if (dataset.has_detection && dataset.has_classification) {
+                        datasetType = 'mixed';
+                        typeLabel = 'Mixed';
+                    } else if (dataset.has_detection) {
+                        datasetType = 'detection';
+                        typeLabel = 'Detection';
+                    }
+
+                    // Count species by type
+                    const speciesCounts = { weed: 0, crop: 0, unknown: 0 };
+                    dataset.classes.forEach(c => {
+                        speciesCounts[c.type] = (speciesCounts[c.type] || 0) + 1;
+                    });
+
+                    // Create parent row
+                    const parentRow = document.createElement('tr');
+                    parentRow.className = 'parent-row';
+                    parentRow.id = parentId;
+                    parentRow.innerHTML = `
+                        <td><a href="${dataset.url}" target="_blank">${dataset.name}</a></td>
+                        <td><span class="dataset-type ${datasetType}">${typeLabel}</span></td>
+                        <td>${dataset.total_images.toLocaleString()}</td>
+                        <td>${dataset.total_objects.toLocaleString()}</td>
+                        <td>
+                            ${speciesCounts.weed > 0 ? `<span class="species-type weed">${speciesCounts.weed} weed</span>` : ''}
+                            ${speciesCounts.crop > 0 ? `<span class="species-type crop">${speciesCounts.crop} crop</span>` : ''}
+                        </td>
+                        <td>
+                            <a href="/?lat=${dataset.latitude}&lng=${dataset.longitude}" class="location-link">
+                                ${dataset.latitude.toFixed(2)}, ${dataset.longitude.toFixed(2)}
+                            </a>
+                        </td>
+                        <td class="star-cell">⭐ ${starCounts[dataset.name] || 0}</td>
+                    `;
+
+                    // Create child row with species details
+                    const childRow = document.createElement('tr');
+                    childRow.className = 'child-row';
+                    childRow.innerHTML = `
+                        <td colspan="7">
+                            <div class="child-content">
+                                <h5>Species Details:</h5>
+                                ${dataset.classes.map(c => `
+                                    <div class="species-detail">
+                                        <div>
+                                            <span class="species-name">${c.name}</span>
+                                            <span class="species-type ${c.type}">${c.type}</span>
+                                            ${c.subcat ? `<small style="color: #888;"> (${c.subcat})</small>` : ''}
+                                        </div>
+                                        <div class="species-stats">
+                                            ${c.n_boxes > 0 ? `<span><i class="fas fa-vector-square"></i> ${c.n_boxes.toLocaleString()} boxes</span>` : ''}
+                                            <span><i class="fas fa-images"></i> ${c.n_class_images.toLocaleString()} images</span>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </td>
+                    `;
+
+                    // Add click handler to parent row
+                    parentRow.addEventListener('click', function(e) {
+                        if (e.target.tagName === 'A') return; // Don't expand when clicking links
+                        this.classList.toggle('expanded');
+                        childRow.classList.toggle('show');
+                    });
+
+                    tableBody.appendChild(parentRow);
+                    tableBody.appendChild(childRow);
+                });
+
+                // Initialize DataTable
+                $('#datasetsTable').DataTable({
+                    pageLength: 25,
+                    order: [[6, 'desc']], // Sort by stars
+                    responsive: true,
+                    language: {
+                        search: "Search datasets:"
+                    },
+                    // Exclude child rows from search/sort
+                    createdRow: function(row) {
+                        if ($(row).hasClass('child-row')) {
+                            $(row).addClass('exclude');
+                        }
+                    }
+                });
+
+            } catch (error) {
+                console.error('Error loading datasets:', error);
+            }
+        }
+
+        // Load data when page loads
+        document.addEventListener('DOMContentLoaded', loadDatasets);
+    </script>
+</body>
+</html>

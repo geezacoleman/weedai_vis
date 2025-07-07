@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Upload - WeedAI Dataset Explorer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="/static/css/mobile.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8f9fa;
+        }
+
+        .page-container {
+            margin-top: 2rem;
+        }
+        .page-title {
+            text-align: center;
+            margin: 2rem 0;
+            color: #2C3E50;
+        }
+        .page-title h2 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .page-title p {
+            color: #666;
+            font-size: 1.2rem;
+        }
+
+        .about-container {
+            background: white;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            max-width: 800px;
+            margin: 0 auto 2rem;
+        }
+        .about-container h3 {
+            margin-top: 0;
+            color: #2C3E50;
+            font-size: 1.75rem;
+        }
+        .about-container p {
+            line-height: 1.6;
+            color: #333;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .format-table th {
+            background: #2C3E50;
+            color: white;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .format-table td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .format-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .format-table code {
+            background: #e9ecef;
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.25rem;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="page-header">
+        <div class="header-left">
+            <div class="logo-section">
+                <h1 onclick="window.location.href='/'">WeedAI Dataset Map</h1>
+                <p>Explore agricultural weed datasets worldwide</p>
+            </div>
+        </div>
+        <nav class="nav-links">
+            <a href="/">Map</a>
+            <a href="/datasets.html">Datasets</a>
+            <a href="/about.html" class="active">About</a>
+            <a href="/how-to-upload.html">How to Upload</a>
+            <a href="https://weed-ai.sydney.edu.au/upload" target="_blank" class="btn-upload">Upload</a>
+        </nav>
+    </header>
+
+    <!-- Page Content -->
+    <div class="page-container">
+        <div class="about-container">
+            <h3>What is WeedAI?</h3>
+            <p>
+                WeedAI is an open-source, searchable image data platform designed to accelerate the
+                development of machine-learning algorithms for weed recognition in cropping systems. It
+                consolidates existing, high-quality annotated datasets of both weeds and crops under a
+                unified schema, and CC BY 4.0 license, making them easy to browse, filter download and incorporate into your pipelines.
+            </p>
+            <h3>Why use WeedAI?</h3>
+            <p>
+                Researchers and practitioners can explore data by crop or weed species, growth stage,
+                location, annotation type, and photographic attributes, as well as contribute their own
+                datasets. This collaborative approach ensures that everyone, from academic labs to industry
+                developers, has access to the volume and variety of imagery needed for robust model training
+                and deployment.
+            </p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="author">Built by Guy Coleman</div>
+        <div class="social-links">
+            <div class="social-icons">
+                <a href="https://github.com/geezacoleman/weedai_vis" target="_blank" aria-label="GitHub">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="https://www.youtube.com/channel/UCQxrZOfuLxlNM1i-gAueoLw" target="_blank" aria-label="YouTube">
+                    <i class="fab fa-youtube"></i>
+                </a>
+                <a href="https://www.linkedin.com/in/guy-coleman/" target="_blank" aria-label="LinkedIn">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+            </div>
+            <div class="version">V0.1.0</div>
+        </div>
+    </footer>
+</body>
+</html>
