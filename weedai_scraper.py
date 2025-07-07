@@ -354,52 +354,27 @@ class WeedAIHandler:
         Build the HTML for each marker popup,
         injecting a star button and count span that rely on LocalStorage.
         """
-        # Use exact dataset name - no modifications
         url = info['url']
         classes = info.get('classes', [])
         class_list = "".join(f"<li>{c['class_name']} ({c['type']})</li>" for c in classes)
 
-        # Properly escape for HTML and JavaScript
-        html_safe_name = html.escape(dataset_name, quote=True)
-        js_safe_name = dataset_name.replace("\\", "\\\\").replace("'", "\\'").replace('"', '\\"')
-
-        # Generate a unique ID for this popup
-        unique_id = abs(hash(dataset_name)) % 1000000
-
         return f"""
-        <div>
-          <strong>{html.escape(dataset_name)}</strong><br>
+        <div class="dataset-popup" data-name="{dataset_name}">
+          <strong>{dataset_name}</strong><br>
           <strong>URL:</strong>
             <a href="{url}" target="_blank">Dataset Link</a><br>
 
           <!-- star button & client-side counter -->
           <button
             class="star-btn"
-            data-dataset="{html_safe_name}"
-            onclick="recordStar('{js_safe_name}'); return false;"
+            onclick="recordStar(this); return false;"
             style="border:none; background:transparent; cursor:pointer; font-size:1.2rem;"
             aria-label="Star this dataset"
           >⭐</button>
-          <span id="star-count-{unique_id}" class="star-count" data-dataset="{html_safe_name}">0</span><br>
+          <span class="star-count">0</span><br>
 
           <strong>Classes:</strong>
           <ul>{class_list}</ul>
-
-          <!-- Inline script to update count when popup opens -->
-          <script>
-            (function() {{
-              const span = document.getElementById('star-count-{unique_id}');
-              if (span && window.starCounts && window.starCounts['{js_safe_name}']) {{
-                span.textContent = window.starCounts['{js_safe_name}'];
-              }}
-
-              // Check if already starred
-              if (localStorage.getItem('starred_{js_safe_name}')) {{
-                const btns = document.querySelectorAll('.star-btn[data-dataset="{html_safe_name}"]');
-                btns.forEach(btn => btn.disabled = true);
-              }}
-            }})();
-          </script>
         </div>
         """
 
@@ -714,114 +689,107 @@ class WeedAIHandler:
         m.get_root().html.add_child(folium.Element(leaderboard_html))
 
         star_js = """
-        <script>
-        // Store counts globally
-        let globalStarCounts = {};
+                <script>
+                // Store all star counts from database
+                let allStarCounts = {};
 
-        // 1) Fetch and render top-10 starred datasets in the sidebar
-        async function fetchLeaderboard() {
-          const res = await fetch('/.netlify/functions/leaderboard');
-          if (!res.ok) return;
-          const data = await res.json();
-          const ol = document.getElementById('leaderboard-list');
-          ol.innerHTML = '';
-          data.forEach(item => {
-            const li = document.createElement('li');
-            li.textContent = `${item.dataset_name} (${item.stars} ⭐)`;
-            ol.appendChild(li);
-          });
-        }
+                // Fetch leaderboard data
+                async function fetchLeaderboard() {
+                  const res = await fetch('/.netlify/functions/leaderboard');
+                  if (!res.ok) return;
+                  const data = await res.json();
+                  const ol = document.getElementById('leaderboard-list');
+                  ol.innerHTML = '';
+                  data.forEach(item => {
+                    const li = document.createElement('li');
+                    li.textContent = `${item.dataset_name} (${item.stars} ⭐)`;
+                    ol.appendChild(li);
+                  });
+                }
 
-        // Update star counts in any visible popups
-        function updateVisibleStarCounts() {
-          Object.entries(globalStarCounts).forEach(([name, count]) => {
-            const spans = document.querySelectorAll(`span.star-count[data-dataset="${name}"]`);
-            const btns = document.querySelectorAll(`button.star-btn[data-dataset="${name}"]`);
+                // Handle star button clicks - pass the button element
+                window.recordStar = async function(button) {
+                  // Get the dataset name from the parent popup div
+                  const popup = button.closest('.dataset-popup');
+                  const datasetName = popup.getAttribute('data-name');
 
-            spans.forEach(span => {
-              span.textContent = count;
-            });
+                  const keyStarred = 'starred_' + datasetName;
+                  if (localStorage.getItem(keyStarred)) return;
 
-            if (localStorage.getItem('starred_' + name)) {
-              btns.forEach(btn => {
-                btn.disabled = true;
-              });
-            }
-          });
-        }
+                  // Update UI
+                  localStorage.setItem(keyStarred, '1');
+                  button.disabled = true;
 
-        // 2) Handle star button clicks (one-star-per-browser)
-        async function recordStar(name) {
-          const keyStarred = 'starred_' + name;
-          // already starred?
-          if (localStorage.getItem(keyStarred)) return;
+                  // Update count
+                  const countSpan = popup.querySelector('.star-count');
+                  const currentCount = parseInt(countSpan.textContent) || 0;
+                  countSpan.textContent = currentCount + 1;
 
-          // optimistic UI update
-          localStorage.setItem(keyStarred, '1');
+                  // Send to server
+                  await fetch('/.netlify/functions/star', {
+                    method: 'POST',
+                    headers: {'Content-Type':'application/json'},
+                    body: JSON.stringify({ name: datasetName })
+                  });
 
-          // Update global count
-          globalStarCounts[name] = (globalStarCounts[name] || 0) + 1;
+                  // Refresh leaderboard
+                  fetchLeaderboard();
+                }
 
-          // Update any visible popups
-          updateVisibleStarCounts();
+                // When page loads
+                document.addEventListener('DOMContentLoaded', async () => {
+                  // Get all counts
+                  try {
+                    const resp = await fetch('/.netlify/functions/counts');
+                    if (resp.ok) {
+                      allStarCounts = await resp.json();
+                    }
+                  } catch (e) {
+                    console.error('Error:', e);
+                  }
 
-          // persist to server with EXACT name
-          await fetch('/.netlify/functions/star', {
-            method: 'POST',
-            headers: {'Content-Type':'application/json'},
-            body: JSON.stringify({ name: name })
-          });
+                  // Update leaderboard
+                  fetchLeaderboard();
 
-          // refresh sidebar
-          fetchLeaderboard();
-        }
+                  // Watch for popups being added to the page
+                  document.addEventListener('click', function() {
+                    // After any click, check if there are popups that need updating
+                    setTimeout(() => {
+                      document.querySelectorAll('.dataset-popup').forEach(popup => {
+                        const name = popup.getAttribute('data-name');
+                        const countSpan = popup.querySelector('.star-count');
+                        const button = popup.querySelector('.star-btn');
 
-        // 3) On page load: fetch counts and setup
-        document.addEventListener('DOMContentLoaded', async () => {
-          // Fetch and store counts globally
-          try {
-            const resp = await fetch('/.netlify/functions/counts');
-            if (resp.ok) {
-              globalStarCounts = await resp.json();
-            }
-          } catch (e) {
-            console.error('Error fetching star counts:', e);
-          }
+                        // Update count if we have data for this dataset
+                        if (allStarCounts[name] && countSpan.textContent === '0') {
+                          countSpan.textContent = allStarCounts[name];
+                        }
 
-          // Populate sidebar leaderboard
-          fetchLeaderboard();
+                        // Disable button if already starred
+                        if (localStorage.getItem('starred_' + name)) {
+                          button.disabled = true;
+                        }
+                      });
+                    }, 100);
+                  });
 
-          // Hook up the stats-bar toggle button
-          const sidebar = document.getElementById('leaderboard');
-          const btn = document.getElementById('toggle-leaderboard');
-          if (btn && sidebar) {
-            btn.addEventListener('click', () => {
-              if (sidebar.style.display === 'none' || sidebar.style.display === '') {
-                sidebar.style.display = 'block';
-                btn.textContent = 'Hide Leaderboard';
-              } else {
-                sidebar.style.display = 'none';
-                btn.textContent = 'Show Leaderboard';
-              }
-            });
-          }
-
-          // Watch for popup opens using MutationObserver
-          const observer = new MutationObserver(() => {
-            updateVisibleStarCounts();
-          });
-
-          // Start observing the document for popup changes
-          observer.observe(document.body, {
-            childList: true,
-            subtree: true
-          });
-        });
-
-        // Make the window.recordStar available globally
-        window.recordStar = recordStar;
-        </script>
-        """
+                  // Toggle button
+                  const sidebar = document.getElementById('leaderboard');
+                  const btn = document.getElementById('toggle-leaderboard');
+                  if (btn && sidebar) {
+                    btn.addEventListener('click', () => {
+                      if (sidebar.style.display === 'none' || sidebar.style.display === '') {
+                        sidebar.style.display = 'block';
+                        btn.textContent = 'Hide Leaderboard';
+                      } else {
+                        sidebar.style.display = 'none';
+                        btn.textContent = 'Show Leaderboard';
+                      }
+                    });
+                  }
+                });
+                </script>
+                """
         m.get_root().html.add_child(folium.Element(star_js))
 
         # Persistent footer (fixed at bottom)
