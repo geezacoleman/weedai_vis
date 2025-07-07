@@ -1,0 +1,76 @@
+/* Mobile responsive styles */
+
+@media (max-width: 768px) {
+  .page-header {
+    padding: 1rem;
+  }
+
+  .page-header h1 {
+    font-size: 2rem;
+  }
+
+  .page-header p {
+    font-size: 1.5rem;
+  }
+
+  /* Stats should wrap nicely on mobile */
+  .page-stats {
+    font-size: 1.2rem;
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .page-stats span {
+    flex: 1 1 auto;
+    min-width: 150px;
+  }
+
+  #toggle-leaderboard {
+    flex: 1 1 100%;
+    margin-left: 0;
+    margin-top: 0.5rem;
+  }
+
+  /* Reposition leaderboard on mobile */
+  #leaderboard {
+    width: 90% !important;
+    left: 5% !important;
+    right: 5% !important;
+    top: auto !important;
+    bottom: 100px !important;
+    max-height: 50vh;
+    overflow-y: auto;
+  }
+
+  .legend {
+    bottom: 3rem;
+    right: 0.5rem;
+    max-width: 180px;
+    font-size: 0.9rem;
+    padding: 0.75rem;
+  }
+
+  /* Footer adjustments */
+  footer {
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.5rem;
+  }
+
+  footer .author {
+    font-size: 1.1rem;
+  }
+
+  footer .social-links {
+    gap: 0.5rem;
+  }
+
+  footer .social-icons {
+    font-size: 1.1rem;
+  }
+
+  footer .version {
+    font-size: 1rem;
+    padding: 0.15rem 0.5rem;
+  }
+}

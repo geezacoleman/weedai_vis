@@ -274,7 +274,7 @@ class WeedAIHandler:
 
     def create_map(self) -> None:
         """
-        Create and save an interactive map visualization
+        Create and save an interactive map visualization with clustering
         """
         lats = [info['latitude'] for info in self.dataset_info.values()]
         lons = [info['longitude'] for info in self.dataset_info.values()]
@@ -283,6 +283,14 @@ class WeedAIHandler:
         map_center = [avg_lat, avg_lon]
 
         m = folium.Map(location=map_center, zoom_start=3, tiles='OpenStreetMap')
+
+        from folium import plugins
+        marker_cluster = plugins.MarkerCluster(
+            name='Dataset Clusters',
+            overlay=True,
+            control=True,
+            icon_create_function=None  # Use default cluster icons
+        )
 
         for dataset_name, info in self.dataset_info.items():
             if 'original_latitude' in info:
@@ -330,7 +338,7 @@ class WeedAIHandler:
                     icon=icon,
                     popup=folium.Popup(popup_content, max_width=500)
                 )
-                marker.add_to(m)
+                marker_cluster.add_child(marker)
             else:
                 default_color = self._get_default_color(info)
 
@@ -343,7 +351,9 @@ class WeedAIHandler:
                     fill_color=default_color,
                     fill_opacity=0.75,
                     popup=folium.Popup(popup_content, max_width=500)
-                ).add_to(m)
+                ).add_to(marker_cluster)
+
+        marker_cluster.add_to(m)
 
         self._add_title_and_legend(m)
         m.save(self.output_html)
@@ -421,229 +431,24 @@ class WeedAIHandler:
         </div>
         """
 
-        fa_css = """
-        <link
-          rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-          integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
-          crossorigin="anonymous"
-          referrerpolicy="no-referrer"
-        />
+        css_links = """
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+              integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+              crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="stylesheet" href="/static/css/main.css">
+        <link rel="stylesheet" href="/static/css/clusters.css">
+        <link rel="stylesheet" href="/static/css/mobile.css">
         """
-        m.get_root().html.add_child(folium.Element(fa_css))
-
-        # Global CSS with fixed mobile styles
-        css = """
-        <style>            
-          /* Page header */
-          .page-header {
-            background: #fff;
-            padding: 1rem 2rem;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            margin-bottom: 0.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-          }
-
-          .page-header h1 {
-            margin: 0;
-            font-size: 2.7rem;
-            font-weight: 700;
-            color: #2C3E50;
-            letter-spacing: 1px;
-          }
-
-          .page-header p {
-            margin: 0.25rem 0 0;
-            color: #555;
-            font-size: 2.2rem;
-          }
-
-          /* Statistics panel */
-          .page-stats {
-            background: #f9f9f9;
-            padding: 1rem 2rem;
-            margin-bottom: 1rem;
-            border-radius: 0.5rem;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            font-size: 2rem;
-            color: #333;
-            display: flex;
-            align-items: center;
-            gap: 2rem;
-            flex-wrap: wrap;      /* Allow wrapping on all screens */
-          }
-
-          /* Leaderboard toggle button */
-          #toggle-leaderboard {
-            margin-left: auto;
-            padding: 0.5rem 1rem;
-            font-size: 1.2rem;
-            background: #2C3E50;
-            color: #fff;
-            border: none;
-            border-radius: 0.3rem;
-            cursor: pointer;
-          }
-
-          #toggle-leaderboard:hover {
-            background: #1f2a38;
-          }
-
-          /* Legend card */
-          .legend {
-            position: fixed;
-            bottom: 6rem;
-            right: 1rem;
-            background: #fff;
-            padding: 1rem;
-            border-radius: 0.5rem;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-            font-size: 1rem;
-            line-height: 1.4;
-            max-width: 240px;
-            z-index: 9999;
-          }
-
-          .legend h5 {
-            margin-top: 0;
-            margin-bottom: 0.5rem;
-            font-size: 1rem;
-            color: #2C3E50;
-          }
-
-          .legend ul {
-            list-style: none;
-            padding: 0;
-            margin: 0 0 1rem 0;
-          }
-
-          .legend li {
-            display: flex;
-            align-items: center;
-            margin-bottom: 0.5rem;
-          }
-
-          /* Dot markers for classes */
-          .legend .dot {
-            display: inline-block;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            margin-right: 0.5rem;
-          }
-
-          /* Pie‐chart icon for proportions */
-          .pie-icon {
-            display: inline-block;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: conic-gradient(
-              #003f5c 0% 50%,
-              #bc5090 0% 100%
-            );
-            margin-right: 0.5rem;
-          }
-
-          /* Button override */
-          a.btn-primary {
-            background-color: #2C3E50;
-            border-color: #2C3E50;
-          }
-          a.btn-primary:hover {
-            background-color: #1f2a38;
-            border-color: #1f2a38;
-          }
-
-          /* Leaderboard sidebar */
-          #leaderboard {
-            display: none;
-            position: fixed;
-            top: 160px;
-            right: 1rem;
-            background: #fff;
-            padding: 1rem;
-            border-radius: .5rem;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-            width: 200px;
-            font-size: 1rem;
-            z-index: 9999;
-          }
-
-          /* Mobile responsiveness */
-          @media (max-width: 768px) {
-            .page-header {
-              padding: 1rem;
-            }
-
-            .page-header h1 {
-              font-size: 2rem;
-            }
-
-            .page-header p {
-              font-size: 1.5rem;
-            }
-
-            /* Stats should wrap nicely on mobile */
-            .page-stats {
-              font-size: 1.2rem;
-              padding: 1rem;
-              gap: 1rem;
-            }
-
-            .page-stats span {
-              flex: 1 1 auto;
-              min-width: 150px;
-            }
-
-            #toggle-leaderboard {
-              flex: 1 1 100%;
-              margin-left: 0;
-              margin-top: 0.5rem;
-            }
-
-            /* Reposition leaderboard on mobile */
-            #leaderboard {
-              width: 90% !important;
-              left: 5% !important;
-              right: 5% !important;
-              top: auto !important;
-              bottom: 100px !important;
-              max-height: 50vh;
-              overflow-y: auto;
-            }
-
-            .legend {
-              bottom: 3rem;
-              right: 0.5rem;
-              max-width: 180px;
-              font-size: 0.9rem;
-              padding: 0.75rem;
-            }
-          }
-        </style>"""
-        m.get_root().html.add_child(folium.Element(css))
+        m.get_root().html.add_child(folium.Element(css_links))
 
         header = f"""
         <!-- Page header -->
         <header class="page-header">
           <div>
             <h1>WeedAI Dataset Map</h1>
-            <p>Location of all datasets currently uploaded to WeedAI.</p>
+            <p>Browse datasets on WeedAI.</p>
           </div>
-          <a
-            href="https://weed-ai.sydney.edu.au/upload"
-            target="_blank"
-            class="btn btn-primary"
-            style="
-              padding: 0.5rem 1rem;
-              font-size: 1.2rem;
-            "
-          >
+          <a href="https://weed-ai.sydney.edu.au/upload" target="_blank" class="btn btn-primary">
             Upload Your Data
           </a>
         </header>
@@ -683,159 +488,30 @@ class WeedAIHandler:
         <!-- Sidebar leaderboard -->
         <div id="leaderboard">
           <h5 style="margin-top:0;">Most-Starred Datasets</h5>
-          <ol id="leaderboard-list" style="padding-left:1.2em; margin:0;"></ol>
+          <ol id="leaderboard-list"></ol>
         </div>
         """
         m.get_root().html.add_child(folium.Element(leaderboard_html))
 
-        star_js = """
-                <script>
-                // Store all star counts from database
-                let allStarCounts = {};
+        weedai_js = '<script src="/static/js/weedai.js"></script>'
+        m.get_root().html.add_child(folium.Element(weedai_js))
 
-                // Fetch leaderboard data
-                async function fetchLeaderboard() {
-                  const res = await fetch('/.netlify/functions/leaderboard');
-                  if (!res.ok) return;
-                  const data = await res.json();
-                  const ol = document.getElementById('leaderboard-list');
-                  ol.innerHTML = '';
-                  data.forEach(item => {
-                    const li = document.createElement('li');
-                    li.textContent = `${item.dataset_name} (${item.stars} ⭐)`;
-                    ol.appendChild(li);
-                  });
-                }
-
-                // Handle star button clicks - pass the button element
-                window.recordStar = async function(button) {
-                  // Get the dataset name from the parent popup div
-                  const popup = button.closest('.dataset-popup');
-                  const datasetName = popup.getAttribute('data-name');
-
-                  const keyStarred = 'starred_' + datasetName;
-                  if (localStorage.getItem(keyStarred)) return;
-
-                  // Update UI
-                  localStorage.setItem(keyStarred, '1');
-                  button.disabled = true;
-
-                  // Update count
-                  const countSpan = popup.querySelector('.star-count');
-                  const currentCount = parseInt(countSpan.textContent) || 0;
-                  countSpan.textContent = currentCount + 1;
-
-                  // Send to server
-                  await fetch('/.netlify/functions/star', {
-                    method: 'POST',
-                    headers: {'Content-Type':'application/json'},
-                    body: JSON.stringify({ name: datasetName })
-                  });
-
-                  // Refresh leaderboard
-                  fetchLeaderboard();
-                }
-
-                // When page loads
-                document.addEventListener('DOMContentLoaded', async () => {
-                  // Get all counts
-                  try {
-                    const resp = await fetch('/.netlify/functions/counts');
-                    if (resp.ok) {
-                      allStarCounts = await resp.json();
-                    }
-                  } catch (e) {
-                    console.error('Error:', e);
-                  }
-
-                  // Update leaderboard
-                  fetchLeaderboard();
-
-                  // Watch for popups being added to the page
-                  document.addEventListener('click', function() {
-                    // After any click, check if there are popups that need updating
-                    setTimeout(() => {
-                      document.querySelectorAll('.dataset-popup').forEach(popup => {
-                        const name = popup.getAttribute('data-name');
-                        const countSpan = popup.querySelector('.star-count');
-                        const button = popup.querySelector('.star-btn');
-
-                        // Update count if we have data for this dataset
-                        if (allStarCounts[name] && countSpan.textContent === '0') {
-                          countSpan.textContent = allStarCounts[name];
-                        }
-
-                        // Disable button if already starred
-                        if (localStorage.getItem('starred_' + name)) {
-                          button.disabled = true;
-                        }
-                      });
-                    }, 100);
-                  });
-
-                  // Toggle button
-                  const sidebar = document.getElementById('leaderboard');
-                  const btn = document.getElementById('toggle-leaderboard');
-                  if (btn && sidebar) {
-                    btn.addEventListener('click', () => {
-                      if (sidebar.style.display === 'none' || sidebar.style.display === '') {
-                        sidebar.style.display = 'block';
-                        btn.textContent = 'Hide Leaderboard';
-                      } else {
-                        sidebar.style.display = 'none';
-                        btn.textContent = 'Show Leaderboard';
-                      }
-                    });
-                  }
-                });
-                </script>
-                """
-        m.get_root().html.add_child(folium.Element(star_js))
-
-        # Persistent footer (fixed at bottom)
         footer_html = """
-        <footer style="
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.5rem 1rem;
-            background: #f1f1f1;
-            box-shadow: 0 -1px 4px rgba(0,0,0,0.1);
-            font-family: sans-serif;
-            z-index: 10000;
-        ">
-          <!-- Left: author -->
-          <div style="font-size: 1.3rem; color: #333;">
-            Built by Guy Coleman
-          </div>
-
-          <!-- Right: social icons + version -->
-          <div style="display: flex; align-items: center; gap: 1rem;">
-            <div style="display: flex; gap: 0.75rem; font-size: 1.3rem;">
-              <a href="https://github.com/geezacoleman/weedai_vis" target="_blank" aria-label="GitHub" style="color: inherit;">
+        <footer>
+          <div class="author">Built by Guy Coleman</div>
+          <div class="social-links">
+            <div class="social-icons">
+              <a href="https://github.com/geezacoleman/weedai_vis" target="_blank" aria-label="GitHub">
                 <i class="fab fa-github"></i>
               </a>
-              <a href="https://www.youtube.com/channel/UCQxrZOfuLxlNM1i-gAueoLw" target="_blank" aria-label="YouTube" style="color: inherit;">
+              <a href="https://www.youtube.com/channel/UCQxrZOfuLxlNM1i-gAueoLw" target="_blank" aria-label="YouTube">
                 <i class="fab fa-youtube"></i>
               </a>
-              <a href="https://www.linkedin.com/in/guy-coleman/" target="_blank" aria-label="LinkedIn" style="color: inherit;">
+              <a href="https://www.linkedin.com/in/guy-coleman/" target="_blank" aria-label="LinkedIn">
                 <i class="fab fa-linkedin"></i>
               </a>
             </div>
-            <div style="
-                font-family: monospace;
-                font-size: 1.3rem;
-                background: #ddd;
-                padding: 0.2rem 0.7rem;
-                border-radius: 0.25rem;
-                color: #555;
-              ">
-              V0.1.0
-            </div>
+            <div class="version">V0.1.0</div>
           </div>
         </footer>
         """
